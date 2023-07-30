@@ -14,10 +14,12 @@ namespace Portfolio.Infrastructure.ServicesImpl
     public class ApiInfoService : IApiInfoService
     {
         private readonly IConfiguration _configuration;
+        private readonly ILogService _logService;
 
-        public ApiInfoService(IConfiguration configuration)
+        public ApiInfoService(IConfiguration configuration, ILogService logService)
         {
             _configuration = configuration;
+            _logService = logService;
         }
 
         public RequestDataVO GetRequestData(HttpRequest request, bool hasAuth = true)
@@ -37,6 +39,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
             }
             catch (Exception ex)
             {
+                _logService.Write($"Falha inesperada ao pegar dados de requisição", this.GetPlace(), ex);
                 throw new AuthencationAppException($"Falha inesperada ao pegar dados de requisição", ex);
             }
         }
@@ -66,6 +69,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
             }
             catch (Exception ex)
             {
+                _logService.Write($"Falha inesperada ao pegar dados de arquivo de configuração", this.GetPlace(), ex);
                 throw new ValidException($"Falha inesperada ao pegar dados de arquivo de configuração", ex);
             }
         }
@@ -91,6 +95,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
             }
             catch (Exception ex)
             {
+                _logService.Write($"Falha inesperada ao pegar dados de requisição", this.GetPlace(), ex);
                 throw new AuthencationAppException($"Falha inesperada ao pegar dados de requisição", ex);
             }
         }
@@ -121,6 +126,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
             }
             catch (Exception ex)
             {
+                _logService.Write($"Falha inesperada ao validar token de usuário, token: {token}", this.GetPlace(), ex);
                 throw new AuthencationAppException($"Falha inesperada ao validar token de usuário", ex);
             }
         }
@@ -161,6 +167,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
             }
             catch (Exception ex)
             {
+                _logService.Write($"Falha inesperada ao pegar dados de usuário da requisição", this.GetPlace(), ex);
                 throw new AuthencationAppException($"Falha inesperada ao pegar dados de usuário da requisição", ex);
             }
         }

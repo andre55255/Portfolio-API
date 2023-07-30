@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Data\Sql\EntitiesConfiguration\" />
     <Folder Include="Data\Sql\Migrations\" />
-    <Folder Include="ServicesImpl\" />
     <Folder Include="RepositoriesImpl\" />
   </ItemGroup>
 
