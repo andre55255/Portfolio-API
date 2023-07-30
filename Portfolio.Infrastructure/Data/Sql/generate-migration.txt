@@ -1,0 +1,7 @@
+Add-Migration NomeDaMigration -context SqlDbContext -o Data/Sql/Migrations
+
+Script-Migration -context SqlDbContext // Gerar código sql
+
+Remove-Migration -context SqlDbContext //para remover migration
+
+Update-Database -context SqlDbContext //para dar update no banco de dados

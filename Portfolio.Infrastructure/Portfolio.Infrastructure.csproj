@@ -7,9 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
+    <Folder Include="Data\Sql\EntitiesConfiguration\" />
+    <Folder Include="Data\Sql\Migrations\" />
     <Folder Include="ServicesImpl\" />
     <Folder Include="RepositoriesImpl\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Portfolio.Core\Portfolio.Core.csproj" />
   </ItemGroup>
 
 </Project>
