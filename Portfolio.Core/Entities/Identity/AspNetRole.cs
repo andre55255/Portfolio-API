@@ -4,17 +4,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Portfolio.Core.Entities.Identity
 {
-    [Table("SC_ASPNETROLES")]
+    [Table("aspnetroles")]
     public class AspNetRole : IdentityRole<int>
     {
         [Key]
-        [Column("ID")]
+        [Column("id")]
         public override int Id { get; set; }
-        [Column("NAME")]
+        [Column("name")]
         public override string Name { get; set; }
-        [Column("NORMALIZED_NAME")]
+        [Column("normalized_name")]
         public override string NormalizedName { get; set; }
-        [Column("CONCURRENCY_STAMP")]
+        [Column("concurrency_stamp")]
         public override string ConcurrencyStamp { get; set; }
     }
 }

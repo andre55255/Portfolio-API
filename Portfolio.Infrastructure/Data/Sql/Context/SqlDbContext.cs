@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Core.Entities.Identity;
+using Portfolio.Core.Entities.Sql;
+using Portfolio.Infrastructure.Data.Sql.EntitiesConfiguration;
 
 namespace Portfolio.Infrastructure.Data.Sql.Context
 {
@@ -13,6 +15,8 @@ namespace Portfolio.Infrastructure.Data.Sql.Context
                                                  AspNetRoleClaim,
                                                  AspNetUserToken>
     {
+        public DbSet<Configuration> Configurations { get; set; }
+
         public SqlDbContext(DbContextOptions<SqlDbContext> opt) : base(opt)
         {
         }
@@ -21,7 +25,7 @@ namespace Portfolio.Infrastructure.Data.Sql.Context
         {
             base.OnModelCreating(builder);
 
-
+            builder.ApplyConfiguration(new ConfigurationConfiguration());
         }
     }
 }

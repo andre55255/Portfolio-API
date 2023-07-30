@@ -3,16 +3,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Portfolio.Core.Entities.Identity
 {
-    [Table("SC_ASPNETUSER_TOKENS")]
+    [Table("aspnetuser_tokens")]
     public class AspNetUserToken : IdentityUserToken<int>
     {
-        [Column("USER_ID")]
+        [Column("user_id")]
         public override int UserId { get; set; }
-        [Column("LOGIN_PROVIDER")]
+        [Column("login_provider")]
         public override string LoginProvider { get; set; }
-        [Column("NAME")]
+        [Column("name")]
         public override string Name { get; set; }
-        [Column("VALUE")]
+        [Column("value")]
         public override string Value { get; set; }
     }
 }

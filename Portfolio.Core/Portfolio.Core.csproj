@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\Sql\" />
-    <Folder Include="RepositoriesInterface\" />
     <Folder Include="Profile\" />
   </ItemGroup>
 

@@ -4,17 +4,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Portfolio.Core.Entities.Identity
 {
-    [Table("SC_ASPNETUSER_CLAIMS")]
+    [Table("aspnetuser_claims")]
     public class AspNetUserClaim : IdentityUserClaim<int>
     {
         [Key]
-        [Column("ID")]
+        [Column("id")]
         public override int Id { get; set; }
-        [Column("USER_ID")]
+        [Column("user_id")]
         public override int UserId { get; set; }
-        [Column("CLAIM_TYPE")]
+        [Column("claim_type")]
         public override string ClaimType { get; set; }
-        [Column("CLAIM_VALUE")]
+        [Column("claim_value")]
         public override string ClaimValue { get; set; }
     }
 }

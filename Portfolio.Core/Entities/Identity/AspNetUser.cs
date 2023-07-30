@@ -1,56 +1,55 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Portfolio.Core.Entities.Identity
 {
-    [Table("SC_ASPNETUSERS")]
+    [Table("aspnetusers")]
     public class AspNetUser : IdentityUser<int>
     {
         // Props personalized
-        [Column("NAME")]
+        [Column("name")]
         public string Name { get; set; }
-        [Column("LAST_NAME")]
+        [Column("last_name")]
         public string LastName { get; set; }
-        [Column("CREATED_AT")]
+        [Column("created_at")]
         public DateTime CreatedAt { get; set; }
-        [Column("UPDATED_AT")]
+        [Column("updated_at")]
         public DateTime UpdatedAt { get; set; }
-        [Column("DISABLED_AT")]
+        [Column("disabled_at")]
         public DateTime? DisabledAt { get; set; }
 
         // Props identity
         [Key]
-        [Column("ID")]
+        [Column("id")]
         public override int Id { get; set; }
-        [Column("LOCKOUT_END")]
+        [Column("lockout_end")]
         public override DateTimeOffset? LockoutEnd { get; set; }
-        [Column("TWO_FACTOR_ENABLED")]
+        [Column("two_factor_enabled")]
         public override bool TwoFactorEnabled { get; set; }
-        [Column("PHONE_NUMBER_CONFIRMED")]
+        [Column("phone_number_confirmed")]
         public override bool PhoneNumberConfirmed { get; set; }
-        [Column("PHONE_NUMBER")]
+        [Column("phone_number")]
         public override string PhoneNumber { get; set; }
-        [Column("CONCURRENCY_STAMP")]
+        [Column("concurrency_stamp")]
         public override string ConcurrencyStamp { get; set; }
-        [Column("SECURITY_STAMP")]
+        [Column("security_stamp")]
         public override string SecurityStamp { get; set; }
-        [Column("PASSWORD_HASH")]
+        [Column("password_hash")]
         public override string PasswordHash { get; set; }
-        [Column("EMAIL_CONFIRMED")]
+        [Column("email_confirmed")]
         public override bool EmailConfirmed { get; set; }
-        [Column("NORMALIZED_EMAIL")]
+        [Column("normalized_email")]
         public override string NormalizedEmail { get; set; }
-        [Column("EMAIL")]
+        [Column("email")]
         public override string Email { get; set; }
-        [Column("NORMALIZED_USERNAME")]
+        [Column("normalized_username")]
         public override string NormalizedUserName { get; set; }
-        [Column("USERNAME")]
+        [Column("username")]
         public override string UserName { get; set; }
-        [Column("LOCKOUT_ENABLED")]
+        [Column("lockout_enabled")]
         public override bool LockoutEnabled { get; set; }
-        [Column("ACCESS_FAILED_COUNT")]
+        [Column("access_failed_count")]
         public override int AccessFailedCount { get; set; }
     }
 }
