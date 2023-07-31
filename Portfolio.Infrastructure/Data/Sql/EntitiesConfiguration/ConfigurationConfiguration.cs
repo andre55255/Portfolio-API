@@ -11,8 +11,9 @@ namespace Portfolio.Infrastructure.Data.Sql.EntitiesConfiguration
             builder.Property(x => x.Token).HasMaxLength(256).IsRequired();
             builder.Property(x => x.Value).HasMaxLength(256).IsRequired();
             builder.Property(x => x.Extra).HasMaxLength(256).IsRequired(false);
-            builder.Property(x => x.CreatedAt).HasDefaultValue(DateTime.Now).IsRequired();
-            builder.Property(x => x.UpdatedAt).HasDefaultValue(DateTime.Now).IsRequired();
+            builder.Property(x => x.CreatedAt).HasColumnType("timestamp").HasDefaultValue(DateTime.Now).IsRequired();
+            builder.Property(x => x.UpdatedAt).HasColumnType("timestamp").HasDefaultValue(DateTime.Now).IsRequired();
+            builder.Property(x => x.DisabledAt).HasColumnType("timestamp").IsRequired(false);
         }
     }
 }

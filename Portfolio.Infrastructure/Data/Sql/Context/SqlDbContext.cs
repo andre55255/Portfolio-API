@@ -26,6 +26,28 @@ namespace Portfolio.Infrastructure.Data.Sql.Context
         {
             base.OnModelCreating(builder);
 
+            // Config name tables identity
+            builder.Entity<AspNetUser>()
+                   .ToTable("aspnetusers");
+
+            builder.Entity<AspNetRole>()
+                   .ToTable("aspnetroles");
+
+            builder.Entity<AspNetRoleClaim>()
+                   .ToTable("aspnetrole_claims");
+
+            builder.Entity<AspNetUserClaim>()
+                   .ToTable("aspnetuser_claims");
+
+            builder.Entity<AspNetUserRole>()
+                   .ToTable("aspnetuser_roles");
+
+            builder.Entity<AspNetUserLogin>()
+                   .ToTable("aspnetuser_logins");
+
+            builder.Entity<AspNetUserToken>()
+                   .ToTable("aspnetuser_tokens");
+
             // Seed default entities
             builder.ApplyConfiguration(new AddUserAdminDefault())
                    .ApplyConfiguration(new AddRolesDefault())
