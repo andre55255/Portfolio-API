@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Portfolio.Core\Portfolio.Core.csproj" />
+    <ProjectReference Include="..\Portfolio.Helpers\Portfolio.Helpers.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,7 +3,7 @@
 namespace Portfolio.Core.Entities.Sql
 {
     [Table("configuration")]
-    public class Configuration
+    public class Configuration : BaseEntity
     {
         [Column("token")]
         public string Token { get; set; }
