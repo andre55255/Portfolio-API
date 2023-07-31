@@ -75,4 +75,7 @@ app.UseAuthorization();
 // Config mapping controllers app
 app.MapControllers();
 
+// Config date postgres
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 app.Run();

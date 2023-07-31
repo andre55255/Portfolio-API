@@ -347,7 +347,10 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
                                 .UpdateAsync(user);
 
                 if (result.Succeeded)
+                {
                     await UpdateUserBlockAttemptsFailedAsync(user.Id, false);
+                    return;
+                }
 
                 throw new RepositoryException($"Falha ao redefinir a senha do usuário {user.UserName} na base de dados");
             }
@@ -417,6 +420,7 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
             try
             {
                 user.Id = 0;
+                user.ConcurrencyStamp = Guid.NewGuid().ToString().ToLower();
                 user.CreatedAt = DateTime.Now;
                 user.UpdatedAt = DateTime.Now;
 

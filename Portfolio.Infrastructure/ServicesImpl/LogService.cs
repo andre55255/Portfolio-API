@@ -11,8 +11,12 @@ namespace Portfolio.Infrastructure.ServicesImpl
             {
                 string msg = ex == null ? "INFO  " : "ERROR:  " + $"Local: {place}. Message: {ex.Message}.";
                 if (ex != null)
-                    msg += $"Inner msg: {ex.InnerException.Message}. Stack Trace: {ex.StackTrace}";
-
+                {
+                    if (ex.InnerException != null)
+                        msg += $"Inner msg: {ex.InnerException}";
+                    if (ex.StackTrace != null)
+                        msg += $". Stack Trace: {ex.StackTrace}";
+                }
                 WriteMessageInFile($"{msg}");
             }
             catch (Exception) { }
@@ -59,7 +63,10 @@ namespace Portfolio.Infrastructure.ServicesImpl
         {
             try
             {
-                string path = Path.GetFullPath("Logs");
+                string path = Path.GetFullPath("Logs") + "\\";
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
                 string archive = path + "log.txt";
                 ValidateDateLog(archive);
                 FileStream fileStream = null;
@@ -69,12 +76,12 @@ namespace Portfolio.Infrastructure.ServicesImpl
                     fileStream.Close();
                     using (streamWriter = new StreamWriter(archive, true, Encoding.UTF8))
                     {
-                        streamWriter.WriteLine(DateTime.Now.ToString() + " - " + msg);
+                        streamWriter.WriteLine($"----------------------------------------------------------------------------\n" + DateTime.Now.ToString() + " - " + msg);
                     }
                     streamWriter.Close();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
             }
         }
