@@ -9,7 +9,7 @@ namespace Portfolio.Core.Entities.Identity
     {
         // Props personalized
         [Column("name")]
-        public string Name { get; set; }
+        public string FirstName { get; set; }
         [Column("last_name")]
         public string LastName { get; set; }
         [Column("created_at")]
