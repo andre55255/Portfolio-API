@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Portfolio.Core.Entities.Identity;
 using Portfolio.Core.Entities.Sql;
 using Portfolio.Infrastructure.Data.Sql.EntitiesConfiguration;
+using Portfolio.Infrastructure.Data.Sql.Seed;
 
 namespace Portfolio.Infrastructure.Data.Sql.Context
 {
@@ -25,7 +26,15 @@ namespace Portfolio.Infrastructure.Data.Sql.Context
         {
             base.OnModelCreating(builder);
 
-            builder.ApplyConfiguration(new ConfigurationConfiguration());
+            // Seed default entities
+            builder.ApplyConfiguration(new AddUserAdminDefault())
+                   .ApplyConfiguration(new AddRolesDefault())
+                   .ApplyConfiguration(new AddRelationUserAdminToRoleDefault())
+                   .ApplyConfiguration(new ConfigurationSeed());
+
+            // Configuration entities
+            builder.ApplyConfiguration(new AspNetUserConfiguration())
+                   .ApplyConfiguration(new ConfigurationConfiguration());
         }
     }
 }
