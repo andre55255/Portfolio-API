@@ -102,7 +102,13 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
         {
             try
             {
-                AspNetUser user = await GetByIdAsync(userId);
+                AspNetUser? user = 
+                    await _signInManager
+                            .UserManager
+                            .Users
+                            .Where(x => x.Id == userId)
+                            .FirstOrDefaultAsync();
+
                 if (user == null)
                     throw new RepositoryException($"Não foi encontrado um usuário com o identificador: {userId}");
 
