@@ -18,6 +18,12 @@
         public static string TimeExpiresRefreshToken = "MINUTES_EXPIRES_REFRESH_TOKEN";
     }
 
+    public static class TokensGenericType
+    {
+        public static string ExperienceWorkStatus = "EXPERIENCE_WORK_STATUS";
+        public static string EducationStatus = "EDUCATION_STATUS";
+    }
+
     public static class DirectoriesName
     {
         public static string EmailTemplates = "Content/Templates";

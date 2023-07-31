@@ -53,7 +53,8 @@ namespace Portfolio.Infrastructure.Data.Sql.Context
             builder.ApplyConfiguration(new AddUserAdminDefault())
                    .ApplyConfiguration(new AddRolesDefault())
                    .ApplyConfiguration(new AddRelationUserAdminToRoleDefault())
-                   .ApplyConfiguration(new ConfigurationSeed());
+                   .ApplyConfiguration(new ConfigurationSeed())
+                   .ApplyConfiguration(new GenericTypeSeed());
 
             // Configuration entities
             builder.ApplyConfiguration(new AspNetUserConfiguration())
