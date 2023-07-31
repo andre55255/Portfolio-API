@@ -10,5 +10,6 @@ namespace Portfolio.Core.ServicesInterface
         public Task<UserWithRolesVO> EditUserAsync(int? id, SaveUserVO model);
         public Task<UserWithRolesVO> DeleteUserAsync(int? idUser);
         public Task<ListAllEntityVO<UserWithRolesVO>> GetAllUsersAsync(int? limit = null, int? page = null);
+        public Task ValidationDataSaveUserAsync(SaveUserVO model);
     }
 }

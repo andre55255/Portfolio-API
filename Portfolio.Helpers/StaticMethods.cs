@@ -10,6 +10,25 @@ namespace Portfolio.Helpers
             return obj.GetType().ToString();
         }
 
+        public static string GenerateAlfaNumericRandom(int size)
+        {
+            try
+            {
+                string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+                Random random = new Random();
+                string result = new string(
+                    Enumerable.Repeat(chars, size)
+                              .Select(s => s[random.Next(s.Length)])
+                              .ToArray());
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new ValidException($"Falha ao gerar nova senha alfanumérica", ex);
+            }
+        }
+
         public static void GetPaginationItems<T>(ref ListAllEntityVO<T> list, ref int? limit, ref int? page) where T : class
         {
             try

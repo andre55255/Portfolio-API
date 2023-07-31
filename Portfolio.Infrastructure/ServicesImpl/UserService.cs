@@ -173,7 +173,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
             }
         }
 
-        private async Task ValidationDataSaveUserAsync(SaveUserVO model)
+        public async Task ValidationDataSaveUserAsync(SaveUserVO model)
         {
             try
             {

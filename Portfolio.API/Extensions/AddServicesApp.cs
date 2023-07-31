@@ -7,6 +7,7 @@ namespace Portfolio.API.Extensions
     {
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
+            services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IApiInfoService, ApiInfoService>();
             services.AddScoped<IConfigurationService, ConfigurationService>();
             services.AddScoped<ISendMailService, SendMailService>();
