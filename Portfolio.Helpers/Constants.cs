@@ -26,7 +26,7 @@
     public static class ConstantsEmail
     {
         public static string TemplateResetAccount = "ResetPassword.html";
-        public static string SubjectResetAccount = $"BManager - Email de redefinição de senha - ";
+        public static string SubjectResetAccount = $"ALB POrtfolio - Email de redefinição de senha - ";
     }
 
     public static class ConfigJwt

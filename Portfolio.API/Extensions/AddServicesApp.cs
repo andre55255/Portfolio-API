@@ -9,6 +9,7 @@ namespace Portfolio.API.Extensions
         {
             services.AddScoped<IApiInfoService, ApiInfoService>();
             services.AddScoped<IConfigurationService, ConfigurationService>();
+            services.AddScoped<ISendMailService, SendMailService>();
             services.AddScoped<ILogService, LogService>();
 
             return services;

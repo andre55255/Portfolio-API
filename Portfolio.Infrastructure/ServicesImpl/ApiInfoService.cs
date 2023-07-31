@@ -55,9 +55,6 @@ namespace Portfolio.Infrastructure.ServicesImpl
 
                 response.VersionAPI = _configuration[ConfigAppSettings.VersionApi];
 
-                response.Auth = _configuration.GetSection(ConfigAppSettings.AuthSection)
-                                              .Get<AuthSettingsVO>();
-
                 response.Jwt = _configuration.GetSection(ConfigAppSettings.JwtSection)
                                              .Get<JwtSettingsVO>(); 
 
