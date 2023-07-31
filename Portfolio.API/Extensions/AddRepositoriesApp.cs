@@ -8,6 +8,7 @@ namespace Portfolio.API.Extensions
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
+            services.AddScoped<IGenericTypeRepository, GenericTypeRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 

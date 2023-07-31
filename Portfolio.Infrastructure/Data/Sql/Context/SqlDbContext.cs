@@ -17,6 +17,7 @@ namespace Portfolio.Infrastructure.Data.Sql.Context
                                                  AspNetUserToken>
     {
         public DbSet<Configuration> Configurations { get; set; }
+        public DbSet<GenericType> GenericTypes { get; set; }
 
         public SqlDbContext(DbContextOptions<SqlDbContext> opt) : base(opt)
         {
@@ -56,7 +57,8 @@ namespace Portfolio.Infrastructure.Data.Sql.Context
 
             // Configuration entities
             builder.ApplyConfiguration(new AspNetUserConfiguration())
-                   .ApplyConfiguration(new ConfigurationConfiguration());
+                   .ApplyConfiguration(new ConfigurationConfiguration())
+                   .ApplyConfiguration(new GenericTypeConfiguration());
         }
     }
 }
