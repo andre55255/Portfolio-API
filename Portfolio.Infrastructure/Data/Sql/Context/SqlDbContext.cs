@@ -17,6 +17,7 @@ namespace Portfolio.Infrastructure.Data.Sql.Context
                                                  AspNetUserToken>
     {
         public DbSet<Configuration> Configurations { get; set; }
+        public DbSet<ExperienceEducation> ExperienceEducations { get; set; }
         public DbSet<ExperienceWork> ExperienceWorks { get; set; }
         public DbSet<GenericType> GenericTypes { get; set; }
         public DbSet<PortfolioConfig> Portfolios { get; set; }
@@ -62,6 +63,7 @@ namespace Portfolio.Infrastructure.Data.Sql.Context
             // Configuration entities
             builder.ApplyConfiguration(new AspNetUserConfiguration())
                    .ApplyConfiguration(new ConfigurationConfiguration())
+                   .ApplyConfiguration(new ExperienceEducationConfiguration())
                    .ApplyConfiguration(new ExperienceWorkConfiguration())
                    .ApplyConfiguration(new GenericTypeConfiguration())
                    .ApplyConfiguration(new PortfolioConfiguration());

@@ -16,5 +16,6 @@ namespace Portfolio.Core.Entities.Sql
 
         // prop navigation
         public virtual List<ExperienceWork> ExperiencesWorks { get; set; }
+        public virtual List<ExperienceEducation> ExperiencesEducations { get; set; }
     }
 }

@@ -14,5 +14,7 @@ namespace Portfolio.Core.RepositoriesInterface.Sql
         public Task<int> CountAsync();
         public Task<bool> IsExistByIdAsync(int portfolioId);
         public Task<bool> IsPermissionAccessByUserIdAsync(int portfolioId, int userId);
+        public Task<bool> IsExistByKeyAccessAsync(string keyAccess);
+        public Task<int?> GetIdByKeyAccessAsync(string keyAccess);
     }
 }

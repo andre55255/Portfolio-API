@@ -86,6 +86,45 @@ namespace Portfolio.Infrastructure.ServicesImpl
             }
         }
 
+        public async Task<List<ExperienceWorkReturnVO>> GetExperiencesWorkdsByKeyAcessPortfolioAsync(string keyAccess)
+        {
+            try
+            {
+                int? idPortfolio =
+                    await _portfolioRepo.GetIdByKeyAccessAsync(keyAccess);
+
+                if (idPortfolio == null || idPortfolio.Value <= 0)
+                    throw new ValidException($"Ñão foi encontrado um portfolio com a key informada, verifique");
+
+                List<ExperienceWork> listEntities =
+                    await _experienceWorkRepo.GetAllByPortfolioIdAsync(idPortfolio.Value);
+
+                return
+                    _mapper.Map<List<ExperienceWorkReturnVO>>(listEntities);
+            }
+            catch (NotFoundException ex)
+            {
+                throw ex;
+            }
+            catch (ConflictException ex)
+            {
+                throw ex;
+            }
+            catch (RepositoryException ex)
+            {
+                throw new ValidException(ex.Message, ex);
+            }
+            catch (ValidException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao listar experiência profissional pela keyAccess: {keyAccess}", this.GetPlace(), ex);
+                throw new ValidException($"Falha inesperada ao listar experiência profissional pela key", ex);
+            }
+        }
+
         public async Task<ExperienceWorkReturnVO> InsertAsync(SaveExperienceWorkVO model, RequestDataVO request)
         {
             try

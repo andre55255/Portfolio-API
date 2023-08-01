@@ -11,5 +11,6 @@ namespace Portfolio.Core.RepositoriesInterface.Sql
         public Task<ExperienceWork> GetByIdAsync(int id);
         public Task<ListAllEntityVO<ExperienceWork>> GetAllAsync(int? limit = null, int? page = null);
         public Task<int> CountAsync();
+        public Task<List<ExperienceWork>> GetAllByPortfolioIdAsync(int portfolioId);
     }
 }

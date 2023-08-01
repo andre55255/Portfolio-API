@@ -89,7 +89,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
             {
                 PortfolioConfig save = await _portfolioRepo.GetByKeyAccessAsync(keyAccess);
                 if (save == null)
-                    throw new NotFoundException($"Falha inesperada ao listar portfolio pela key informada");
+                    throw new NotFoundException($"Não foi encontrado um portfolio com a key informada");
 
                 return _mapper.Map<PortfolioReturnVO>(save);
             }

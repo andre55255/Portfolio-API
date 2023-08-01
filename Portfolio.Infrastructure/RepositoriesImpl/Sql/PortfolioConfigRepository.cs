@@ -85,6 +85,49 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
             }
         }
 
+        public async Task<bool> IsExistByKeyAccessAsync(string keyAccess)
+        {
+            try
+            {
+                return
+                    await _db.Portfolios
+                             .Where(x => x.DisabledAt == null &&
+                                         x.KeyAccess == keyAccess)
+                             .AnyAsync();
+            }
+            catch (RepositoryException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao verificar se portfolio existe com a key {keyAccess}", this.GetPlace(), ex);
+                throw new RepositoryException($"Falha inesperada ao verificar se portfolio existe com a key informada", ex);
+            }
+        }
+
+        public async Task<int?> GetIdByKeyAccessAsync(string keyAccess)
+        {
+            try
+            {
+                return
+                    await _db.Portfolios
+                             .Where(x => x.DisabledAt == null &&
+                                         x.KeyAccess == keyAccess)
+                             .Select(x => x.Id)
+                             .FirstOrDefaultAsync();
+            }
+            catch (RepositoryException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao pegar identificador de portfolio com a key {keyAccess}", this.GetPlace(), ex);
+                throw new RepositoryException($"Falha inesperada ao pegar identificador de portfolio com a key informada", ex);
+            }
+        }
+
         public async Task<ListAllEntityVO<PortfolioConfig>> GetAllAsync(int? limit = null, int? page = null)
         {
             try

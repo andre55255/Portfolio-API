@@ -10,13 +10,13 @@ using Portfolio.Infrastructure.Data.Sql.Context;
 
 namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
 {
-    public class ExperienceWorkRepository : IExperienceWorkRepository
+    public class ExperienceEducationRepository : IExperienceEducationRepository
     {
         private readonly SqlDbContext _db;
         private readonly IMapper _mapper;
         private readonly ILogService _logService;
 
-        public ExperienceWorkRepository(SqlDbContext db, IMapper mapper, ILogService logService)
+        public ExperienceEducationRepository(SqlDbContext db, IMapper mapper, ILogService logService)
         {
             _db = db;
             _mapper = mapper;
@@ -28,7 +28,7 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
             try
             {
                 return
-                    await _db.ExperienceWorks
+                    await _db.ExperienceEducations
                              .Where(x => x.DisabledAt == null)
                              .CountAsync();
             }
@@ -38,16 +38,16 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
             }
             catch (Exception ex)
             {
-                _logService.Write($"Falha inesperada ao listar quantidade de itens na tabela de experiências profissionais", this.GetPlace(), ex);
-                throw new RepositoryException($"Falha inesperada ao listar quantidade de itens na tabela de experiências profissionais", ex);
+                _logService.Write($"Falha inesperada ao listar quantidade de itens na tabela de experiências educacionais", this.GetPlace(), ex);
+                throw new RepositoryException($"Falha inesperada ao listar quantidade de itens na tabela de experiências educacionais", ex);
             }
         }
 
-        public async Task<ListAllEntityVO<ExperienceWork>> GetAllAsync(int? limit = null, int? page = null)
+        public async Task<ListAllEntityVO<ExperienceEducation>> GetAllAsync(int? limit = null, int? page = null)
         {
             try
             {
-                ListAllEntityVO<ExperienceWork> response = new ListAllEntityVO<ExperienceWork>();
+                ListAllEntityVO<ExperienceEducation> response = new ListAllEntityVO<ExperienceEducation>();
                 response.TotalItems = await CountAsync();
 
                 if (response.TotalItems <= 0)
@@ -56,12 +56,12 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
                 StaticMethods.GetPaginationItems(ref response, ref limit, ref page);
 
                 response.Items =
-                    await _db.ExperienceWorks
+                    await _db.ExperienceEducations
                              .Where(x => x.DisabledAt == null)
                              .Include(x => x.JourneyWorkStatus)
                              .Include(x => x.Portfolio)
                              .OrderBy(x => x.StartDate)
-                             .ThenBy(x => x.OfficeName)
+                             .ThenBy(x => x.EducationName)
                              .Skip(limit.Value * page.Value)
                              .Take(limit.Value)
                              .AsNoTracking()
@@ -75,40 +75,17 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
             }
             catch (Exception ex)
             {
-                _logService.Write($"Falha inesperada ao listar experiências profissionais da base de dados", this.GetPlace(), ex);
-                throw new RepositoryException($"Falha inesperada ao listar experiências profissionais da base de dados", ex);
+                _logService.Write($"Falha inesperada ao listar experiências educacionais da base de dados", this.GetPlace(), ex);
+                throw new RepositoryException($"Falha inesperada ao listar experiências educacionais da base de dados", ex);
             }
         }
 
-        public async Task<List<ExperienceWork>> GetAllByPortfolioIdAsync(int portfolioId)
+        public async Task<ExperienceEducation> GetByIdAsync(int id)
         {
             try
             {
                 return
-                    await _db.ExperienceWorks
-                             .Where(x => x.DisabledAt == null &&
-                                         x.PortfolioId == portfolioId)
-                             .Include(x => x.JourneyWorkStatus)
-                             .Include(x => x.Portfolio)
-                             .ToListAsync();
-            }
-            catch (RepositoryException ex)
-            {
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                _logService.Write($"Falha inesperada ao listar experiências profissionais pelo id de portoflio {portfolioId}", this.GetPlace(), ex);
-                throw new RepositoryException($"Falha inesperada ao listar experiências profissionais pelo portfolio informado", ex);
-            }
-        }
-
-        public async Task<ExperienceWork> GetByIdAsync(int id)
-        {
-            try
-            {
-                return
-                    await _db.ExperienceWorks
+                    await _db.ExperienceEducations
                              .Where(x => x.DisabledAt == null &&
                                          x.Id == id)
                              .Include(x => x.JourneyWorkStatus)
@@ -121,18 +98,41 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
             }
             catch (Exception ex)
             {
-                _logService.Write($"Falha inesperada ao listar experiências profissionais pelo id {id}", this.GetPlace(), ex);
-                throw new RepositoryException($"Falha inesperada ao listar experiências profissionais pelo id {id}", ex);
+                _logService.Write($"Falha inesperada ao listar experiências educacionais pelo id {id}", this.GetPlace(), ex);
+                throw new RepositoryException($"Falha inesperada ao listar experiências educacionais pelo id {id}", ex);
             }
         }
 
-        public async Task<ExperienceWork> InsertAsync(ExperienceWork model)
+        public async Task<List<ExperienceEducation>> GetAllByPortfolioIdAsync(int portfolioId)
+        {
+            try
+            {
+                return
+                    await _db.ExperienceEducations
+                             .Where(x => x.DisabledAt == null &&
+                                         x.PortfolioId == portfolioId)
+                             .Include(x => x.JourneyWorkStatus)
+                             .Include(x => x.Portfolio)
+                             .ToListAsync();
+            }
+            catch (RepositoryException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao listar experiências educacionais pelo id de portoflio {portfolioId}", this.GetPlace(), ex);
+                throw new RepositoryException($"Falha inesperada ao listar experiências educacionais pelo portfolio informado", ex);
+            }
+        }
+
+        public async Task<ExperienceEducation> InsertAsync(ExperienceEducation model)
         {
             try
             {
                 model.Id = 0;
 
-                _db.ExperienceWorks.Add(model);
+                _db.ExperienceEducations.Add(model);
                 await _db.SaveChangesAsync();
 
                 return await GetByIdAsync(model.Id);
@@ -143,18 +143,18 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
             }
             catch (Exception ex)
             {
-                _logService.Write($"Falha inesperada ao inserir experiências profissionais na base de dados", this.GetPlace(), ex);
-                throw new RepositoryException($"Falha inesperada ao inserir experiências profissionais na base de dados", ex);
+                _logService.Write($"Falha inesperada ao inserir experiências educacionais na base de dados", this.GetPlace(), ex);
+                throw new RepositoryException($"Falha inesperada ao inserir experiências educacionais na base de dados", ex);
             }
         }
 
-        public async Task<ExperienceWork> RemoveAsync(int id)
+        public async Task<ExperienceEducation> RemoveAsync(int id)
         {
             try
             {
-                ExperienceWork save = await GetByIdAsync(id);
+                ExperienceEducation save = await GetByIdAsync(id);
                 if (save == null)
-                    throw new RepositoryException($"Não foi encontrado uma experiência profissional com o id {id}");
+                    throw new RepositoryException($"Não foi encontrado uma experiência educacional com o id {id}");
 
                 save.DisabledAt = DateTime.Now;
                 await _db.SaveChangesAsync();
@@ -167,23 +167,23 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
             }
             catch (Exception ex)
             {
-                _logService.Write($"Falha inesperada ao deletar experiências profissional pelo id {id}", this.GetPlace(), ex);
-                throw new RepositoryException($"Falha inesperada ao deletar experiências profissional pelo id {id}", ex);
+                _logService.Write($"Falha inesperada ao deletar experiências educacional pelo id {id}", this.GetPlace(), ex);
+                throw new RepositoryException($"Falha inesperada ao deletar experiências educacional pelo id {id}", ex);
             }
         }
 
-        public async Task<ExperienceWork> UpdateAsync(ExperienceWork model)
+        public async Task<ExperienceEducation> UpdateAsync(ExperienceEducation model)
         {
             try
             {
-                ExperienceWork? save =
-                    await _db.ExperienceWorks
+                ExperienceEducation? save =
+                    await _db.ExperienceEducations
                              .Where(x => x.DisabledAt == null &&
                                          x.Id == model.Id)
                              .FirstOrDefaultAsync();
 
                 if (save == null)
-                    throw new RepositoryException($"Não foi encontrado uma experiência profissional com o id {model.Id}");
+                    throw new RepositoryException($"Não foi encontrado uma experiência educacional com o id {model.Id}");
 
                 model.CreatedAt = save.CreatedAt;
                 model.UpdatedAt = DateTime.Now;
@@ -199,8 +199,8 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
             }
             catch (Exception ex)
             {
-                _logService.Write($"Falha inesperada ao editar experiências profissionais na base de dados", this.GetPlace(), ex);
-                throw new RepositoryException($"Falha inesperada ao editar experiências profissionais na base de dados", ex);
+                _logService.Write($"Falha inesperada ao editar experiências educacionais na base de dados", this.GetPlace(), ex);
+                throw new RepositoryException($"Falha inesperada ao editar experiências educacionais na base de dados", ex);
             }
         }
     }
