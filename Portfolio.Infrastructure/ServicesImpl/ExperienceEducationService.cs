@@ -12,18 +12,20 @@ namespace Portfolio.Infrastructure.ServicesImpl
     public class ExperienceEducationService : IExperienceEducationService
     {
         private readonly IExperienceEducationRepository _experienceEducationRepo;
+        private readonly IPortfolioConfigService _portfolioService;
         private readonly IPortfolioConfigRepository _portfolioRepo;
         private readonly IGenericTypeRepository _genericTypeRepo;
         private readonly IMapper _mapper;
         private readonly ILogService _logService;
 
-        public ExperienceEducationService(IExperienceEducationRepository experienceEducationRepo, IPortfolioConfigRepository portfolioRepo, IGenericTypeRepository genericTypeRepo, IMapper mapper, ILogService logService)
+        public ExperienceEducationService(IExperienceEducationRepository experienceEducationRepo, IPortfolioConfigRepository portfolioRepo, IGenericTypeRepository genericTypeRepo, IMapper mapper, ILogService logService, IPortfolioConfigService portfolioService)
         {
             _experienceEducationRepo = experienceEducationRepo;
             _portfolioRepo = portfolioRepo;
             _genericTypeRepo = genericTypeRepo;
             _mapper = mapper;
             _logService = logService;
+            _portfolioService = portfolioService;
         }
 
         public async Task<ListAllEntityVO<ExperienceEducationReturnVO>> GetAllAsync(int? limit = null, int? page = null)
@@ -229,17 +231,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
         {
             try
             {
-                bool isPermissionAccessPortfolio =
-                    await _portfolioRepo.IsPermissionAccessByUserIdAsync(model.PortfolioId, request.User.Id);
-
-                if (!isPermissionAccessPortfolio)
-                    throw new ValidException($"Acesso negado para incluir/editar itens do portfolio {model.PortfolioId}");
-
-                bool isPortfolioExist =
-                    await _portfolioRepo.IsExistByIdAsync(model.PortfolioId);
-
-                if (!isPortfolioExist)
-                    throw new ValidException($"Não foi encontrado um portfolio com o id {model.PortfolioId}");
+                await _portfolioService.ValidPermissionAccessAsync(model.PortfolioId, request.User.Id);
 
                 List<GenericType> statusList = await _genericTypeRepo.GetByTokenAsync(TokensGenericType.EducationStatus);
                 if (statusList == null)

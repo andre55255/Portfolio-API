@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Portfolio.Communication.ViewObjects.ContactMe;
 using Portfolio.Communication.ViewObjects.ExperienceEducation;
 using Portfolio.Communication.ViewObjects.ExperienceWork;
 using Portfolio.Communication.ViewObjects.Portfolio;
@@ -12,5 +13,6 @@ namespace Portfolio.Core.ServicesInterface
         public Task<List<ExperienceWorkReturnVO>> GetMyExperiencesWorkAsync(PublicPageRequestDataVO requestData);
         public Task<PortfolioReturnVO> GetPortfolioAsync(PublicPageRequestDataVO requestData);
         public PublicPageRequestDataVO GetRequestData(HttpRequest request);
+        public Task<ContactMeReturnVO> SaveContactMeAsync(SaveContactMeVO contactMe, PublicPageRequestDataVO requestData);
     }
 }

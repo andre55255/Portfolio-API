@@ -211,5 +211,40 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 throw new ValidException($"Falha inesperada ao editar portfolio pelo id {id}", ex);
             }
         }
+
+        public async Task ValidPermissionAccessAsync(int portfolioId, int userId)
+        {
+            try
+            {
+                bool isPermissionAccessPortfolio =
+                   await _portfolioRepo.IsPermissionAccessByUserIdAsync(portfolioId, userId);
+
+                if (!isPermissionAccessPortfolio)
+                    throw new ValidException($"Acesso negado para incluir/editar itens do portfolio {portfolioId}");
+
+                bool isPortfolioExist =
+                    await _portfolioRepo.IsExistByIdAsync(portfolioId);
+
+                if (!isPortfolioExist)
+                    throw new ValidException($"Não foi encontrado um portfolio com o id {portfolioId}");
+            }
+            catch (NotFoundException ex)
+            {
+                throw ex;
+            }
+            catch (RepositoryException ex)
+            {
+                throw new ValidException(ex.Message, ex);
+            }
+            catch (ValidException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao validar acesso ao portfolio {portfolioId} pelo usuário {userId}", this.GetPlace(), ex);
+                throw new ValidException($"Falha inesperada na validação de acesso ao portfolio", ex);
+            }
+        }
     }
 }

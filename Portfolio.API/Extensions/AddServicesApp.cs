@@ -10,6 +10,7 @@ namespace Portfolio.API.Extensions
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IApiInfoService, ApiInfoService>();
             services.AddScoped<IConfigurationService, ConfigurationService>();
+            services.AddScoped<IContactMeService, ContactMeService>();
             services.AddScoped<IExperienceEducationService, ExperienceEducationService>();
             services.AddScoped<IExperienceWorkService, ExperienceWorkService>();
             services.AddScoped<IGenericTypeService, GenericTypeService>();

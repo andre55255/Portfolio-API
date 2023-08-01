@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Portfolio.Communication.CustomExceptions;
+using Portfolio.Communication.ViewObjects.ContactMe;
 using Portfolio.Communication.ViewObjects.ExperienceEducation;
 using Portfolio.Communication.ViewObjects.ExperienceWork;
 using Portfolio.Communication.ViewObjects.Portfolio;
@@ -14,14 +15,16 @@ namespace Portfolio.Infrastructure.ServicesImpl
         private readonly ILogService _logService;
         private readonly IPortfolioConfigService _portfolioService;
         private readonly IExperienceWorkService _experienceWorkService;
+        private readonly IContactMeService _contactMeService;
         private readonly IExperienceEducationService _experienceEducationService;
 
-        public PublicPageService(ILogService logService, IPortfolioConfigService portfolioService, IExperienceWorkService experienceWorkService, IExperienceEducationService experienceEducationService)
+        public PublicPageService(ILogService logService, IPortfolioConfigService portfolioService, IExperienceWorkService experienceWorkService, IExperienceEducationService experienceEducationService, IContactMeService contactMeService)
         {
             _logService = logService;
             _portfolioService = portfolioService;
             _experienceWorkService = experienceWorkService;
             _experienceEducationService = experienceEducationService;
+            _contactMeService = contactMeService;
         }
 
         public async Task<List<ExperienceEducationReturnVO>> GetMyExperiencesEducationAsync(PublicPageRequestDataVO requestData)
@@ -128,6 +131,32 @@ namespace Portfolio.Infrastructure.ServicesImpl
             {
                 _logService.Write($"Falha inesperada ao pegar dados de credenciais da requisição", this.GetPlace(), ex);
                 throw new ValidException($"Falha inesperada ao pegar dados de credenciais da requisição", ex);
+            }
+        }
+
+        public async Task<ContactMeReturnVO> SaveContactMeAsync(SaveContactMeVO contactMe, PublicPageRequestDataVO requestData)
+        {
+            try
+            {
+                return
+                    await _contactMeService.InsertAsync(contactMe, requestData);
+            }
+            catch (ConflictException ex)
+            {
+                throw ex;
+            }
+            catch (NotFoundException ex)
+            {
+                throw ex;
+            }
+            catch (ValidException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao salvar contato para o portfolio de key {requestData.KeyAccess}", this.GetPlace(), ex);
+                throw new ValidException($"Falha inesperada ao salvar contato", ex);
             }
         }
     }

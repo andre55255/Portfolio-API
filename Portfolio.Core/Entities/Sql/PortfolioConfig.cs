@@ -38,5 +38,6 @@ namespace Portfolio.Core.Entities.Sql
         public virtual List<PortfolioConfigUsersAssociate> PortolioUsersAssociates { get; set; }
         public virtual List<ExperienceWork> ExperiencesWorks { get; set; }
         public virtual List<ExperienceEducation> ExperiencesEducations{ get; set; }
+        public virtual List<ContactMe> Contacts { get; set; }
     }
 }

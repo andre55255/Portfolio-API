@@ -13,17 +13,19 @@ namespace Portfolio.Infrastructure.ServicesImpl
     {
         private readonly IExperienceWorkRepository _experienceWorkRepo;
         private readonly IPortfolioConfigRepository _portfolioRepo;
+        private readonly IPortfolioConfigService _portfolioConfigService;
         private readonly IGenericTypeRepository _genericTypeRepo;
         private readonly IMapper _mapper;
         private readonly ILogService _logService;
 
-        public ExperienceWorkService(IExperienceWorkRepository experienceWorkRepo, IPortfolioConfigRepository portfolioRepo, IGenericTypeRepository genericTypeRepo, IMapper mapper, ILogService logService)
+        public ExperienceWorkService(IExperienceWorkRepository experienceWorkRepo, IPortfolioConfigRepository portfolioRepo, IGenericTypeRepository genericTypeRepo, IMapper mapper, ILogService logService, IPortfolioConfigService portfolioConfigService)
         {
             _experienceWorkRepo = experienceWorkRepo;
             _portfolioRepo = portfolioRepo;
             _genericTypeRepo = genericTypeRepo;
             _mapper = mapper;
             _logService = logService;
+            _portfolioConfigService = portfolioConfigService;
         }
 
         public async Task<ListAllEntityVO<ExperienceWorkReturnVO>> GetAllAsync(int? limit = null, int? page = null)
@@ -229,17 +231,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
         {
             try
             {
-                bool isPermissionAccessPortfolio =
-                    await _portfolioRepo.IsPermissionAccessByUserIdAsync(model.PortfolioId, request.User.Id);
-
-                if (!isPermissionAccessPortfolio)
-                    throw new ValidException($"Acesso negado para incluir/editar itens do portfolio {model.PortfolioId}");
-
-                bool isPortfolioExist =
-                    await _portfolioRepo.IsExistByIdAsync(model.PortfolioId);
-
-                if (!isPortfolioExist)
-                    throw new ValidException($"Não foi encontrado um portfolio com o id {model.PortfolioId}");
+                await _portfolioConfigService.ValidPermissionAccessAsync(model.PortfolioId, request.User.Id);
 
                 List<GenericType> statusList = await _genericTypeRepo.GetByTokenAsync(TokensGenericType.ExperienceWorkStatus);
                 if (statusList == null)
