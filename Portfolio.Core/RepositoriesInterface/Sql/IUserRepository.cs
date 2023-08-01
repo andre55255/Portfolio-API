@@ -20,5 +20,6 @@ namespace Portfolio.Core.RepositoriesInterface.Sql
         public Task ResetPasswordUserSignInAsync(AspNetUser user, string newPassword);
         public Task ResetPasswordUserAsync(AspNetUser user, string newPassword, string code);
         public Task AuthenticationUserByUserNameByPassAsync(AspNetUser user, string password);
+        public Task ValidUsersIdsAsync(List<int> usersIds);
     }
 }

@@ -13,6 +13,7 @@ namespace Portfolio.API.Extensions
             services.AddScoped<IGenericTypeService, GenericTypeService>();
             services.AddScoped<ISendMailService, SendMailService>();
             services.AddScoped<ILogService, LogService>();
+            services.AddScoped<IPortfolioConfigService, PortfolioConfigService>();
             services.AddScoped<IUserService, UserService>();
 
             return services;

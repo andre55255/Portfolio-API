@@ -618,5 +618,34 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
                 throw new RepositoryException($"Falha inesperada ao listar usuários no banco de dados", ex);
             }
         }
+
+        public async Task ValidUsersIdsAsync(List<int> usersIds)
+        {
+            try
+            {
+                foreach (int userId in usersIds)
+                {
+                    bool isExist =
+                        await _signInManager
+                                .UserManager
+                                .Users
+                                .Where(x => x.Id == userId &&
+                                            x.DisabledAt == null)
+                                .AnyAsync();
+
+                    if (!isExist)
+                        throw new RepositoryException($"Não foi encontrado na base de dados um usuário com o id {userId}");
+                }
+            }
+            catch (RepositoryException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao validar usuários na base de dados pelos ids: {string.Join("-", usersIds)}", this.GetPlace(), ex);
+                throw new RepositoryException($"Falha inesperada ao validar usuários na base de dados", ex);
+            }
+        }
     }
 }

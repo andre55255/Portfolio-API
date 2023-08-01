@@ -18,6 +18,8 @@ namespace Portfolio.Infrastructure.Data.Sql.Context
     {
         public DbSet<Configuration> Configurations { get; set; }
         public DbSet<GenericType> GenericTypes { get; set; }
+        public DbSet<PortfolioConfig> Portfolios { get; set; }
+        public DbSet<PortfolioConfigUsersAssociate> PortofolioUsersAssociates { get; set; }
 
         public SqlDbContext(DbContextOptions<SqlDbContext> opt) : base(opt)
         {
@@ -59,7 +61,8 @@ namespace Portfolio.Infrastructure.Data.Sql.Context
             // Configuration entities
             builder.ApplyConfiguration(new AspNetUserConfiguration())
                    .ApplyConfiguration(new ConfigurationConfiguration())
-                   .ApplyConfiguration(new GenericTypeConfiguration());
+                   .ApplyConfiguration(new GenericTypeConfiguration())
+                   .ApplyConfiguration(new PortfolioConfiguration());
         }
     }
 }

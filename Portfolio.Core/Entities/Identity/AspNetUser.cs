@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Portfolio.Core.Entities.Sql;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,6 +19,10 @@ namespace Portfolio.Core.Entities.Identity
         public DateTime UpdatedAt { get; set; }
         [Column("disabled_at")]
         public DateTime? DisabledAt { get; set; }
+
+        // Props navigation
+        public virtual List<PortfolioConfig> PortfoliosAssociates { get; set; }
+        public virtual List<PortfolioConfigUsersAssociate> PortolioUsersAssociates { get; set; }
 
         // Props identity
         [Key]

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Portfolio.Communication.CustomAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.Communication.ViewObjects.User
 {
@@ -18,6 +19,7 @@ namespace Portfolio.Communication.ViewObjects.User
 
         [Required(ErrorMessage = "Email não informado")]
         [StringLength(255, ErrorMessage = "Email deve ter no máximo 255 caracteres", MinimumLength = 1)]
+        [EmailValid(ErrorMessage = "Email inválido")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Número de contato não informado")]
