@@ -10,6 +10,12 @@ namespace Portfolio.Helpers
             return obj.GetType().ToString();
         }
 
+        public static void IsValidId(this int? id)
+        {
+            if (id == null)
+                throw new ValidException($"Id não informado");
+        }
+
         public static string GenerateAlfaNumericRandom(int size)
         {
             try

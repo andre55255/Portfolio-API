@@ -48,6 +48,7 @@ namespace Portfolio.Communication.ViewObjects.Portfolio
 
     public class PortfolioReturnVO : SavePortfolioVO
     {
+        public int Id { get; set; } = 0;
         public List<string> UsersNameAssociates { get; set; }
     }
 }

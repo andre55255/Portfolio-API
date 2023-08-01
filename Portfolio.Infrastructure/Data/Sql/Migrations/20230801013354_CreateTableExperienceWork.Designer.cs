@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Portfolio.Infrastructure.Data.Sql.Context;
@@ -11,9 +12,10 @@ using Portfolio.Infrastructure.Data.Sql.Context;
 namespace Portfolio.Infrastructure.Data.Sql.Migrations
 {
     [DbContext(typeof(SqlDbContext))]
-    partial class SqlDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230801013354_CreateTableExperienceWork")]
+    partial class CreateTableExperienceWork
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,14 +63,14 @@ namespace Portfolio.Infrastructure.Data.Sql.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "483ca20c-e085-4ff7-872c-677e253a3cc3",
+                            ConcurrencyStamp = "c11e1e24-f3f6-4c84-9a79-3d93b605a45c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "bf12fabd-7ef0-4cdf-9d2e-6b074d312e5a",
+                            ConcurrencyStamp = "44db4ce8-1e64-4579-9159-ee1f0347e009",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -126,7 +128,7 @@ namespace Portfolio.Infrastructure.Data.Sql.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 35, 3, 321, DateTimeKind.Local).AddTicks(430))
+                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(6172))
                         .HasColumnName("created_at");
 
                     b.Property<DateTime?>("DisabledAt")
@@ -201,7 +203,7 @@ namespace Portfolio.Infrastructure.Data.Sql.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 35, 3, 321, DateTimeKind.Local).AddTicks(548))
+                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(6301))
                         .HasColumnName("updated_at");
 
                     b.Property<string>("UserName")
@@ -226,8 +228,8 @@ namespace Portfolio.Infrastructure.Data.Sql.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "047c1b34-ec33-453b-910c-9ecd12be5874",
-                            CreatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 319, DateTimeKind.Local).AddTicks(5064),
+                            ConcurrencyStamp = "eda06a1d-6d8e-4537-ba65-ea1fe1c531b8",
+                            CreatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 801, DateTimeKind.Local).AddTicks(1734),
                             Email = "andre_luiz.b5@outlook.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -235,12 +237,12 @@ namespace Portfolio.Infrastructure.Data.Sql.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ANDRE_LUIZ.B5@OUTLOOK.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEN/oK1vjyJQ+q9fWWCKxUJq0Mz3ghjFgRThjRUfRGCryNXIzo6wn1ZRRE1gDa4DiCQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGKw7+sJxUvN/kEcYdtAJu9fqqKxU8WBg78hhfahxrwVmqbX7JGpSG6PkX0IaZYwhg==",
                             PhoneNumber = "31 995600166",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c7f8c3c5-4dfd-47a9-aab5-d3f293460941",
+                            SecurityStamp = "0ffd1b88-c79d-471b-a4c3-6ecac3595f8d",
                             TwoFactorEnabled = false,
-                            UpdatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 319, DateTimeKind.Local).AddTicks(5075),
+                            UpdatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 801, DateTimeKind.Local).AddTicks(1745),
                             UserName = "admin"
                         });
                 });
@@ -366,7 +368,7 @@ namespace Portfolio.Infrastructure.Data.Sql.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 35, 3, 321, DateTimeKind.Local).AddTicks(920))
+                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(6708))
                         .HasColumnName("created_at");
 
                     b.Property<DateTime?>("DisabledAt")
@@ -387,7 +389,7 @@ namespace Portfolio.Infrastructure.Data.Sql.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 35, 3, 321, DateTimeKind.Local).AddTicks(1019))
+                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(6809))
                         .HasColumnName("updated_at");
 
                     b.Property<string>("Value")
@@ -404,65 +406,65 @@ namespace Portfolio.Infrastructure.Data.Sql.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9825),
+                            CreatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5571),
                             Token = "EMAIL_LOGIN",
-                            UpdatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9827),
+                            UpdatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5573),
                             Value = "todo"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9829),
+                            CreatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5575),
                             Token = "EMAIL_PASSWORD",
-                            UpdatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9830),
+                            UpdatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5575),
                             Value = "todo"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9830),
+                            CreatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5576),
                             Token = "EMAIL_PORT",
-                            UpdatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9831),
+                            UpdatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5576),
                             Value = "todo"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9831),
+                            CreatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5577),
                             Token = "EMAIL_SMTP",
-                            UpdatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9832),
+                            UpdatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5577),
                             Value = "todo"
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9832),
+                            CreatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5578),
                             Token = "ATTEMPTS_LOGIN_ERROR",
-                            UpdatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9833),
+                            UpdatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5578),
                             Value = "todo"
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9833),
+                            CreatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5579),
                             Token = "ATTEMPTS_LOGIN_ERROR_DAYS_BLOCK",
-                            UpdatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9834),
+                            UpdatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5579),
                             Value = "todo"
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9834),
+                            CreatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5580),
                             Token = "MINUTES_EXPIRES_ACCESS_TOKEN",
-                            UpdatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9835),
+                            UpdatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5580),
                             Value = "todo"
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9835),
+                            CreatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5581),
                             Token = "MINUTES_EXPIRES_REFRESH_TOKEN",
-                            UpdatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9836),
+                            UpdatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5581),
                             Value = "todo"
                         });
                 });
@@ -491,7 +493,7 @@ namespace Portfolio.Infrastructure.Data.Sql.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 35, 3, 321, DateTimeKind.Local).AddTicks(2823))
+                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(8686))
                         .HasColumnName("created_at");
 
                     b.Property<DateTime?>("DisabledAt")
@@ -524,7 +526,7 @@ namespace Portfolio.Infrastructure.Data.Sql.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 35, 3, 321, DateTimeKind.Local).AddTicks(2973))
+                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(8891))
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id");
@@ -533,7 +535,7 @@ namespace Portfolio.Infrastructure.Data.Sql.Migrations
 
                     b.HasIndex("PortfolioId");
 
-                    b.ToTable("experience_work");
+                    b.ToTable("ExperienceWorks");
                 });
 
             modelBuilder.Entity("Portfolio.Core.Entities.Sql.GenericType", b =>
@@ -548,7 +550,7 @@ namespace Portfolio.Infrastructure.Data.Sql.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 35, 3, 321, DateTimeKind.Local).AddTicks(3368))
+                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(9331))
                         .HasColumnName("created_at");
 
                     b.Property<string>("Description")
@@ -570,7 +572,7 @@ namespace Portfolio.Infrastructure.Data.Sql.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 35, 3, 321, DateTimeKind.Local).AddTicks(3487))
+                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(9432))
                         .HasColumnName("updated_at");
 
                     b.Property<string>("Value")
@@ -590,73 +592,73 @@ namespace Portfolio.Infrastructure.Data.Sql.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9884),
+                            CreatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5629),
                             Description = "Status de jornada experiência de trabalho",
                             Token = "EXPERIENCE_WORK_STATUS",
-                            UpdatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9885),
+                            UpdatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5630),
                             Value = "Integral"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9886),
+                            CreatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5631),
                             Description = "Status de jornada experiência de trabalho",
                             Token = "EXPERIENCE_WORK_STATUS",
-                            UpdatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9886),
+                            UpdatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5632),
                             Value = "Meio período"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9887),
+                            CreatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5632),
                             Description = "Status de jornada experiência de trabalho",
                             Token = "EXPERIENCE_WORK_STATUS",
-                            UpdatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9887),
+                            UpdatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5633),
                             Value = "Noturna"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9888),
+                            CreatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5633),
                             Description = "Status de jornada experiência de trabalho",
                             Token = "EXPERIENCE_WORK_STATUS",
-                            UpdatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9888),
+                            UpdatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5634),
                             Value = "Turno"
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9889),
+                            CreatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5634),
                             Description = "Status de faculdade/curso experiência de trabalho",
                             Token = "EDUCATION_STATUS",
-                            UpdatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9889),
+                            UpdatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5635),
                             Value = "Em curso"
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9890),
+                            CreatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5635),
                             Description = "Status de faculdade/curso experiência de trabalho",
                             Token = "EDUCATION_STATUS",
-                            UpdatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9890),
+                            UpdatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5636),
                             Value = "Concluído"
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9891),
+                            CreatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5636),
                             Description = "Status de faculdade/curso experiência de trabalho",
                             Token = "EDUCATION_STATUS",
-                            UpdatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9891),
+                            UpdatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5637),
                             Value = "Incompleto"
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9892),
+                            CreatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5637),
                             Description = "Status de faculdade/curso experiência de trabalho",
                             Token = "EDUCATION_STATUS",
-                            UpdatedAt = new DateTime(2023, 7, 31, 22, 35, 3, 320, DateTimeKind.Local).AddTicks(9892),
+                            UpdatedAt = new DateTime(2023, 7, 31, 22, 33, 53, 802, DateTimeKind.Local).AddTicks(5638),
                             Value = "Trancado"
                         });
                 });
@@ -679,7 +681,7 @@ namespace Portfolio.Infrastructure.Data.Sql.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 35, 3, 321, DateTimeKind.Local).AddTicks(7981))
+                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 33, 53, 803, DateTimeKind.Local).AddTicks(3767))
                         .HasColumnName("created_at");
 
                     b.Property<DateTime?>("DisabledAt")
@@ -737,7 +739,7 @@ namespace Portfolio.Infrastructure.Data.Sql.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 35, 3, 321, DateTimeKind.Local).AddTicks(8106))
+                        .HasDefaultValue(new DateTime(2023, 7, 31, 22, 33, 53, 803, DateTimeKind.Local).AddTicks(3899))
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id");

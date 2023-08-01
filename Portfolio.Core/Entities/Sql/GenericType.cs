@@ -13,5 +13,8 @@ namespace Portfolio.Core.Entities.Sql
         public string Description { get; set; }
         [Column("value_bool")]
         public bool? ValueBool { get; set; }
+
+        // prop navigation
+        public virtual List<ExperienceWork> ExperiencesWorks { get; set; }
     }
 }

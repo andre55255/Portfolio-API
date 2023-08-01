@@ -43,6 +43,48 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
             }
         }
 
+        public async Task<bool> IsPermissionAccessByUserIdAsync(int portfolioId, int userId)
+        {
+            try
+            {
+                return
+                    await _db.PortofolioUsersAssociates
+                             .Where(x => x.UserId == userId &&
+                                         x.PortfolioId == portfolioId)
+                             .AnyAsync();
+            }
+            catch (RepositoryException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao verificar se o usuário {userId} tem permissão no portfolio {portfolioId}", this.GetPlace(), ex);
+                throw new RepositoryException($"Falha inesperada ao verificar se o usuário {userId} tem permissão no portfolio {portfolioId}", ex);
+            }
+        }
+
+        public async Task<bool> IsExistByIdAsync(int portfolioId)
+        {
+            try
+            {
+                return
+                    await _db.Portfolios
+                             .Where(x => x.DisabledAt == null &&
+                                         x.Id == portfolioId)
+                             .AnyAsync();
+            }
+            catch (RepositoryException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao verificar se portfolio existe com o id {portfolioId}", this.GetPlace(), ex);
+                throw new RepositoryException($"Falha inesperada ao verificar se portfolio existe com o id {portfolioId}", ex);
+            }
+        }
+
         public async Task<ListAllEntityVO<PortfolioConfig>> GetAllAsync(int? limit = null, int? page = null)
         {
             try

@@ -12,5 +12,7 @@ namespace Portfolio.Core.RepositoriesInterface.Sql
         public Task<PortfolioConfig> GetByKeyAccessAsync(string keyAccess);
         public Task<ListAllEntityVO<PortfolioConfig>> GetAllAsync(int? limit = null, int? page = null);
         public Task<int> CountAsync();
+        public Task<bool> IsExistByIdAsync(int portfolioId);
+        public Task<bool> IsPermissionAccessByUserIdAsync(int portfolioId, int userId);
     }
 }

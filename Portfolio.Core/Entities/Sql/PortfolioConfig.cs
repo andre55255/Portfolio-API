@@ -36,5 +36,6 @@ namespace Portfolio.Core.Entities.Sql
         // Prop navigation
         public virtual List<AspNetUser> UsersAssociates { get; set; }
         public virtual List<PortfolioConfigUsersAssociate> PortolioUsersAssociates { get; set; }
+        public virtual List<ExperienceWork> ExperiencesWorks { get; set; }
     }
 }
