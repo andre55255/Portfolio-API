@@ -26,7 +26,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
             try
             {
                 return
-                    await _experienceWorkService.GetExperiencesWorkdsByKeyAcessPortfolioAsync(requestData.KeyAccess)
+                    await _experienceWorkService.GetExperiencesWorkdsByKeyAcessPortfolioAsync(requestData.KeyAccess);
             }
             catch (ConflictException ex)
             {
