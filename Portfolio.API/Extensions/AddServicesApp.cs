@@ -1,4 +1,6 @@
 ﻿using Portfolio.Core.ServicesInterface;
+using Portfolio.HandleFiles.Services.Impl;
+using Portfolio.HandleFiles.Services.Interfaces;
 using Portfolio.Infrastructure.ServicesImpl;
 
 namespace Portfolio.API.Extensions
@@ -14,6 +16,8 @@ namespace Portfolio.API.Extensions
             services.AddScoped<IExperienceEducationService, ExperienceEducationService>();
             services.AddScoped<IExperienceWorkService, ExperienceWorkService>();
             services.AddScoped<IGenericTypeService, GenericTypeService>();
+            services.AddScoped<IFileUniqueService, FileUniqueService>();
+            services.AddScoped<IFileManyService, FileManyService>();
             services.AddScoped<ISendMailService, SendMailService>();
             services.AddScoped<ILogService, LogService>();
             services.AddScoped<IPortfolioConfigService, PortfolioConfigService>();
