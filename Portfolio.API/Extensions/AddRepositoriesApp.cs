@@ -13,6 +13,7 @@ namespace Portfolio.API.Extensions
             services.AddScoped<IExperienceWorkRepository, ExperienceWorkRepository>();
             services.AddScoped<IGenericTypeRepository, GenericTypeRepository>();
             services.AddScoped<IPortfolioConfigRepository, PortfolioConfigRepository>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 

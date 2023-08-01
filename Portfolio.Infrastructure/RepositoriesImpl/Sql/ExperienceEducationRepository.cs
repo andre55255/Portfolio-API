@@ -60,7 +60,7 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
                              .Where(x => x.DisabledAt == null)
                              .Include(x => x.JourneyWorkStatus)
                              .Include(x => x.Portfolio)
-                             .OrderBy(x => x.StartDate)
+                             .OrderByDescending(x => x.StartDate)
                              .ThenBy(x => x.EducationName)
                              .Skip(limit.Value * page.Value)
                              .Take(limit.Value)
@@ -113,6 +113,8 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
                                          x.PortfolioId == portfolioId)
                              .Include(x => x.JourneyWorkStatus)
                              .Include(x => x.Portfolio)
+                             .OrderByDescending(x => x.StartDate)
+                             .ThenBy(x => x.EducationName)
                              .ToListAsync();
             }
             catch (RepositoryException ex)

@@ -17,6 +17,7 @@ namespace Portfolio.API.Extensions
             services.AddScoped<ISendMailService, SendMailService>();
             services.AddScoped<ILogService, LogService>();
             services.AddScoped<IPortfolioConfigService, PortfolioConfigService>();
+            services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<IPublicPageService, PublicPageService>();
             services.AddScoped<IUserService, UserService>();
 

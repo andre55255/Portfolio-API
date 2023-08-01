@@ -222,8 +222,8 @@ namespace Portfolio.Infrastructure.ServicesImpl
             }
             catch (Exception ex)
             {
-                _logService.Write($"Falha inesperada ao inserir experiência profissional", this.GetPlace(), ex);
-                throw new ValidException($"Falha inesperada ao inserir experiência profissional", ex);
+                _logService.Write($"Falha inesperada ao editar experiência profissional", this.GetPlace(), ex);
+                throw new ValidException($"Falha inesperada ao editar experiência profissional", ex);
             }
         }
 

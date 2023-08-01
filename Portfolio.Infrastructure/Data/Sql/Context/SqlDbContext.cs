@@ -22,6 +22,7 @@ namespace Portfolio.Infrastructure.Data.Sql.Context
         public DbSet<ExperienceWork> ExperienceWorks { get; set; }
         public DbSet<GenericType> GenericTypes { get; set; }
         public DbSet<PortfolioConfig> Portfolios { get; set; }
+        public DbSet<Project> Projects { get; set; }
         public DbSet<PortfolioConfigUsersAssociate> PortofolioUsersAssociates { get; set; }
 
         public SqlDbContext(DbContextOptions<SqlDbContext> opt) : base(opt)
@@ -68,7 +69,8 @@ namespace Portfolio.Infrastructure.Data.Sql.Context
                    .ApplyConfiguration(new ExperienceEducationConfiguration())
                    .ApplyConfiguration(new ExperienceWorkConfiguration())
                    .ApplyConfiguration(new GenericTypeConfiguration())
-                   .ApplyConfiguration(new PortfolioConfiguration());
+                   .ApplyConfiguration(new PortfolioConfiguration())
+                   .ApplyConfiguration(new ProjectConfiguration());
         }
     }
 }
