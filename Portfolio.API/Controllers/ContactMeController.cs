@@ -205,7 +205,7 @@ namespace Portfolio.API.Controllers
         /// GetByPortfolioId - Método para listar contatos pelo id do portfolio na base de dados, dados opcionais para paginação. Passar pela url o id do portfolio
         /// </summary>
         [Authorize(Roles = "Admin, User")]
-        [HttpGet("{id}")]
+        [HttpGet("GetByPortfolioId/{id}")]
         public async Task<IActionResult> GetByPortfolioIdAsync(int? id)
         {
             try
