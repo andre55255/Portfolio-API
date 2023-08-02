@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Portfolio.HandleFiles.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.Communication.ViewObjects.ContactMe
 {
@@ -17,6 +18,8 @@ namespace Portfolio.Communication.ViewObjects.ContactMe
         public string Contact { get; set; }
 
         public int? PortfolioId { get; set; }
+
+        public FileBase64Model FileAttachment { get; set; }
     }
 
     public class ContactMeReturnVO : SaveContactMeVO

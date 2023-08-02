@@ -5,6 +5,7 @@ using Portfolio.Communication.ViewObjects.Utlis;
 using Portfolio.Core.Entities.Sql;
 using Portfolio.Core.RepositoriesInterface.Sql;
 using Portfolio.Core.ServicesInterface;
+using Portfolio.HandleFiles.Models;
 using Portfolio.Helpers;
 
 namespace Portfolio.Infrastructure.ServicesImpl
@@ -13,17 +14,19 @@ namespace Portfolio.Infrastructure.ServicesImpl
     {
         private readonly IProjectRepository _projectRepo;
         private readonly IPortfolioConfigRepository _portfolioRepo;
+        private readonly IHandleFileService _handleFileService;
         private readonly IPortfolioConfigService _portfolioConfigService;
         private readonly IMapper _mapper;
         private readonly ILogService _logService;
 
-        public ProjectService(IProjectRepository projectRepo, IPortfolioConfigRepository portfolioRepo, IPortfolioConfigService portfolioConfigService, IMapper mapper, ILogService logService)
+        public ProjectService(IProjectRepository projectRepo, IPortfolioConfigRepository portfolioRepo, IPortfolioConfigService portfolioConfigService, IMapper mapper, ILogService logService, IHandleFileService handleFileService)
         {
             _projectRepo = projectRepo;
             _portfolioRepo = portfolioRepo;
             _portfolioConfigService = portfolioConfigService;
             _mapper = mapper;
             _logService = logService;
+            _handleFileService = handleFileService;
         }
 
         public async Task<ListAllEntityVO<ProjectReturnVO>> GetAllAsync(int? limit = null, int? page = null)
@@ -33,8 +36,11 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 ListAllEntityVO<Project> listEntities =
                     await _projectRepo.GetAllAsync(limit, page);
 
-                return
+                ListAllEntityVO<ProjectReturnVO> resp =
                     _mapper.Map<ListAllEntityVO<ProjectReturnVO>>(listEntities);
+
+                resp.Items = GetFilesProjects(resp.Items);
+                return resp;
             }
             catch (NotFoundException ex)
             {
@@ -65,7 +71,15 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 if (save == null)
                     throw new NotFoundException($"Não foi encontrado um projeto com o id {id}");
 
-                return _mapper.Map<ProjectReturnVO>(save);
+                ProjectReturnVO resp = _mapper.Map<ProjectReturnVO>(save);
+
+                resp.FileThumbImg =
+                    _handleFileService.GetUrlFileUniqueAtDirectory(
+                        ConstantsFileService.ProjectFileEntity,
+                        resp.Id.ToString(),
+                        ConstantsFileService.ProjectFileName);
+
+                return resp;
             }
             catch (NotFoundException ex)
             {
@@ -99,8 +113,11 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 List<Project> listEntities =
                     await _projectRepo.GetAllByPortfolioIdAsync(idPortfolio.Value);
 
-                return
+                List<ProjectReturnVO> resp =
                     _mapper.Map<List<ProjectReturnVO>>(listEntities);
+
+                resp = GetFilesProjects(resp);
+                return resp;
             }
             catch (NotFoundException ex)
             {
@@ -134,7 +151,25 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 Project entity = _mapper.Map<Project>(model);
 
                 entity = await _projectRepo.InsertAsync(entity);
-                return _mapper.Map<ProjectReturnVO>(entity);
+                ProjectReturnVO resp = _mapper.Map<ProjectReturnVO>(entity);
+
+                _handleFileService.SaveFileUniqueBase64AtDirectory(
+                    new FileBase64Model
+                    {
+                        FileBase64 = model.FileThumbImg.FileBase64,
+                        Name = ConstantsFileService.ProjectFileName
+                    },
+                    ConstantsFileService.ProjectFileEntity,
+                    ConstantsFileService.ProjectFileName,
+                    entity.Id.ToString());
+
+                resp.FileThumbImg =
+                    _handleFileService.GetUrlFileUniqueAtDirectory(
+                        ConstantsFileService.ProjectFileEntity,
+                        entity.Id.ToString(),
+                        ConstantsFileService.ProjectFileName);
+
+                return resp;
             }
             catch (NotFoundException ex)
             {
@@ -200,7 +235,25 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 entity.Id = id.Value;
 
                 entity = await _projectRepo.UpdateAsync(entity);
-                return _mapper.Map<ProjectReturnVO>(entity);
+                ProjectReturnVO resp = _mapper.Map<ProjectReturnVO>(entity);
+
+                _handleFileService.UpdateFileUniqueBase64AtDirectory(
+                    new FileBase64Model
+                    {
+                        FileBase64 = model.FileThumbImg.FileBase64,
+                        Name = ConstantsFileService.ProjectFileName
+                    },
+                    ConstantsFileService.ProjectFileEntity,
+                    ConstantsFileService.ProjectFileName,
+                    entity.Id.ToString());
+
+                resp.FileThumbImg =
+                    _handleFileService.GetUrlFileUniqueAtDirectory(
+                        ConstantsFileService.ProjectFileEntity,
+                        entity.Id.ToString(),
+                        ConstantsFileService.ProjectFileName);
+
+                return resp;
             }
             catch (NotFoundException ex)
             {
@@ -245,6 +298,31 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 throw new ValidException($"Falha inesperada ao consistir dados de projeto", ex);
             }
 
+        }
+
+        private List<ProjectReturnVO> GetFilesProjects(List<ProjectReturnVO> items)
+        {
+            try
+            {
+                foreach (ProjectReturnVO item in items)
+                {
+                    item.FileThumbImg =
+                        _handleFileService.GetUrlFileUniqueAtDirectory(
+                            ConstantsFileService.ProjectFileEntity,
+                            item.Id.ToString(),
+                            ConstantsFileService.ProjectFileName);
+                }
+                return items;
+            }
+            catch (ValidException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao listar imagens de projetos", this.GetPlace(), ex);
+                throw new ValidException($"Falha inesperada ao listar imagens de projetos", ex);
+            }
         }
     }
 }

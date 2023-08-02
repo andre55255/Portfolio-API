@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Portfolio.HandleFiles\Portfolio.HandleFiles.csproj" />
+  </ItemGroup>
+
 </Project>

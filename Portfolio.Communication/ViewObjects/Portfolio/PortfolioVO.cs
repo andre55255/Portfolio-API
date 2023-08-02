@@ -1,4 +1,5 @@
 ﻿using Portfolio.Communication.CustomAnnotations;
+using Portfolio.HandleFiles.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.Communication.ViewObjects.Portfolio
@@ -44,6 +45,10 @@ namespace Portfolio.Communication.ViewObjects.Portfolio
 
         [Required(ErrorMessage = "Usuários associados a este portfolio não informados, verifique")]
         public List<int> UsersIds { get; set; }
+
+        [Required(ErrorMessage = "Não foi informada a foto de perfil")]
+        public FileBase64Model ProfileImage { get; set; }
+
     }
 
     public class PortfolioReturnVO : SavePortfolioVO

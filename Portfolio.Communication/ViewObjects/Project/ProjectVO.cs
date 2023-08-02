@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Portfolio.HandleFiles.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.Communication.ViewObjects.Project
 {
@@ -25,10 +26,14 @@ namespace Portfolio.Communication.ViewObjects.Project
 
         [Required(ErrorMessage = "Id de portfolio não informada")]
         public int PortfolioId { get; set; }
+
+        [Required(ErrorMessage = "Imagem de thumb de projeto não informada")]
+        public FileBase64Model FileThumbImg { get; set; }
     }
 
     public class ProjectReturnVO : SaveProjectVO
     {
+        public int Id { get; set; }
         public List<string> TechsList { get; set; }
         public string PortfolioTitle { get; set; }
     }

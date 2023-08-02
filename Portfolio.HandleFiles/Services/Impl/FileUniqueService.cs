@@ -133,12 +133,16 @@ namespace Portfolio.HandleFiles.Services.Impl
             {
                 string folder = GetFolder(entityName, idEntity, defaultImage);
                 if (!Directory.Exists(folder))
-                    throw new HandleFileException($"Diretório '{folder}' fornecido não foi encontrado, verifique");
+                    return null;
+                    //throw new HandleFileException($"Diretório '{folder}' fornecido não foi encontrado, verifique");
 
                 string[] files = Directory.GetFiles(folder);
                 string? file = files.Where(x => x.StartsWith(folder + nameFile.ToUpper())).FirstOrDefault();
-                if (file is null || !File.Exists(file))
-                    throw new HandleFileException($"Arquivo '{nameFile}' não foi encontrado no diretório '{folder}', verifique");
+                if (file == null)
+                    return null;
+
+                if (!File.Exists(file))
+                    throw new HandleFileException($"Arquivo '{file}' não foi encontrado no diretório '{folder}', verifique");
 
                 FileInfo fileInfo = new FileInfo(file);
                 string filePath = null;

@@ -5,6 +5,7 @@ using Portfolio.Communication.ViewObjects.Utlis;
 using Portfolio.Core.Entities.Sql;
 using Portfolio.Core.RepositoriesInterface.Sql;
 using Portfolio.Core.ServicesInterface;
+using Portfolio.HandleFiles.Models;
 using Portfolio.Helpers;
 
 namespace Portfolio.Infrastructure.ServicesImpl
@@ -15,15 +16,17 @@ namespace Portfolio.Infrastructure.ServicesImpl
         private readonly IMapper _mapper;
         private readonly ILogService _logService;
         private readonly IPortfolioConfigService _portfolioService;
+        private readonly IHandleFileService _handleFileService;
         private readonly IPortfolioConfigRepository _portfolioRepo;
 
-        public ContactMeService(IContactMeRepository contactMeRepo, IMapper mapper, ILogService logService, IPortfolioConfigService portfolioService, IPortfolioConfigRepository portfolioRepo)
+        public ContactMeService(IContactMeRepository contactMeRepo, IMapper mapper, ILogService logService, IPortfolioConfigService portfolioService, IPortfolioConfigRepository portfolioRepo, IHandleFileService handleFileService)
         {
             _contactMeRepo = contactMeRepo;
             _mapper = mapper;
             _logService = logService;
             _portfolioService = portfolioService;
             _portfolioRepo = portfolioRepo;
+            _handleFileService = handleFileService;
         }
 
         public async Task<ListAllEntityVO<ContactMeReturnVO>> GetAllAsync(int? limit = null, int? page = null)
@@ -33,8 +36,11 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 ListAllEntityVO<ContactMe> listEntities =
                     await _contactMeRepo.GetAllAsync(limit, page);
 
-                return
+                ListAllEntityVO<ContactMeReturnVO> resp =
                     _mapper.Map<ListAllEntityVO<ContactMeReturnVO>>(listEntities);
+
+                resp.Items = GetFilesContactMe(resp.Items);
+                return resp;
             }
             catch (NotFoundException ex)
             {
@@ -66,8 +72,11 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 List<ContactMe> listEntities =
                     await _contactMeRepo.GetAllByPortfolioIdAsync(portfolioId.Value);
 
-                return
+                List<ContactMeReturnVO> resp =
                     _mapper.Map<List<ContactMeReturnVO>>(listEntities);
+
+                resp = GetFilesContactMe(resp);
+                return resp;
             }
             catch (NotFoundException ex)
             {
@@ -97,8 +106,16 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 ContactMe entity =
                     await _contactMeRepo.GetByIdAsync(id.Value);
 
-                return
+                ContactMeReturnVO resp =
                     _mapper.Map<ContactMeReturnVO>(entity);
+
+                resp.FileAttachment =
+                    _handleFileService.GetUrlFileUniqueAtDirectory(
+                        ConstantsFileService.ContactMeFileEntity,
+                        entity.Id.ToString(),
+                        ConstantsFileService.ContactMeFileName);
+
+                return resp;
             }
             catch (NotFoundException ex)
             {
@@ -129,8 +146,26 @@ namespace Portfolio.Infrastructure.ServicesImpl
 
                 entity = await _contactMeRepo.InsertAsync(entity);
 
-                return
+                ContactMeReturnVO resp =
                     _mapper.Map<ContactMeReturnVO>(entity);
+
+                _handleFileService.SaveFileUniqueBase64AtDirectory(
+                    new FileBase64Model
+                    {
+                        FileBase64 = model.FileAttachment == null ? null : model.FileAttachment.Name,
+                        Name = ConstantsFileService.ContactMeFileName
+                    },
+                    ConstantsFileService.ContactMeFileEntity,
+                    ConstantsFileService.ContactMeFileName,
+                    resp.Id.ToString());
+
+                resp.FileAttachment =
+                    _handleFileService.GetUrlFileUniqueAtDirectory(
+                        ConstantsFileService.ContactMeFileEntity,
+                        resp.Id.ToString(),
+                        ConstantsFileService.ContactMeFileName);
+
+                return resp;
             }
             catch (NotFoundException ex)
             {
@@ -195,8 +230,26 @@ namespace Portfolio.Infrastructure.ServicesImpl
 
                 entity = await _contactMeRepo.UpdateAsync(entity);
 
-                return
+                ContactMeReturnVO resp =
                     _mapper.Map<ContactMeReturnVO>(entity);
+
+                _handleFileService.UpdateFileUniqueBase64AtDirectory(
+                    new FileBase64Model
+                    {
+                        FileBase64 = model.FileAttachment == null ? null : model.FileAttachment.Name,
+                        Name = ConstantsFileService.ContactMeFileName
+                    },
+                    ConstantsFileService.ContactMeFileEntity,
+                    ConstantsFileService.ContactMeFileName,
+                    resp.Id.ToString());
+
+                resp.FileAttachment =
+                   _handleFileService.GetUrlFileUniqueAtDirectory(
+                       ConstantsFileService.ContactMeFileEntity,
+                       resp.Id.ToString(),
+                       ConstantsFileService.ContactMeFileName);
+
+                return resp;
             }
             catch (NotFoundException ex)
             {
@@ -250,6 +303,31 @@ namespace Portfolio.Infrastructure.ServicesImpl
             {
                 _logService.Write($"Falha inesperada ao consistir dados de contato", this.GetPlace(), ex);
                 throw new ValidException($"Falha inesperada ao consistir dados de contato", ex);
+            }
+        }
+
+        private List<ContactMeReturnVO> GetFilesContactMe(List<ContactMeReturnVO> items)
+        {
+            try
+            {
+                foreach (ContactMeReturnVO item in items)
+                {
+                    item.FileAttachment =
+                        _handleFileService.GetUrlFileUniqueAtDirectory(
+                            ConstantsFileService.ContactMeFileEntity,
+                            item.Id.ToString(),
+                            ConstantsFileService.ContactMeFileName);
+                }
+                return items;
+            }
+            catch (ValidException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao pegar imagens de contatos {items.Count}", this.GetPlace(), ex);
+                throw new ValidException($"Falha inesperada ao pegar imagens de contatos", ex);
             }
         }
     }

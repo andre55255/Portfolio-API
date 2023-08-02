@@ -5,6 +5,21 @@
         public static string Cors = "ClientPermission";
     }
 
+    public static class ConstantsFileService
+    {
+        // Portfolio - Imagem única - Foto de perfil
+        public static string PortfolioProfileImageName = "PortfolioProfile";
+        public static string PortfolioProfileEntity = "PortfolioProfile";
+
+        // ContactMe - Arquivo único - Anexo
+        public static string ContactMeFileName = "ContactMeFile";
+        public static string ContactMeFileEntity = "ContactMeFile";
+
+        // Projects - Imagem única - Imagem de thumb de projeto
+        public static string ProjectFileName = "ProjectThumb";
+        public static string ProjectFileEntity = "ProjectThumb";
+    }
+
     public static class ConfigurationTokens
     {
         public static string EmailSmtp = "EMAIL_SMTP";

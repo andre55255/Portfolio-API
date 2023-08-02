@@ -26,8 +26,6 @@ namespace Portfolio.API.Controllers
             _logService = logService;
         }
 
-
-
         /// <summary>
         /// POST - Método para criar um projeto na base de dados, passar dados pelo body
         /// </summary>

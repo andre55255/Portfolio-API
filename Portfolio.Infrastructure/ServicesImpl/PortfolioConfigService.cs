@@ -6,6 +6,7 @@ using Portfolio.Communication.ViewObjects.Utlis;
 using Portfolio.Core.Entities.Sql;
 using Portfolio.Core.RepositoriesInterface.Sql;
 using Portfolio.Core.ServicesInterface;
+using Portfolio.HandleFiles.Models;
 using Portfolio.Helpers;
 
 namespace Portfolio.Infrastructure.ServicesImpl
@@ -13,16 +14,18 @@ namespace Portfolio.Infrastructure.ServicesImpl
     public class PortfolioConfigService : IPortfolioConfigService
     {
         private readonly IPortfolioConfigRepository _portfolioRepo;
+        private readonly IHandleFileService _handleFileService;
         private readonly IUserRepository _userRepo;
         private readonly ILogService _logService;
         private readonly IMapper _mapper;
 
-        public PortfolioConfigService(IPortfolioConfigRepository portfolioRepo, ILogService logService, IMapper mapper, IUserRepository userRepo)
+        public PortfolioConfigService(IPortfolioConfigRepository portfolioRepo, ILogService logService, IMapper mapper, IUserRepository userRepo, IHandleFileService handleFileService)
         {
             _portfolioRepo = portfolioRepo;
             _logService = logService;
             _mapper = mapper;
             _userRepo = userRepo;
+            _handleFileService = handleFileService;
         }
 
         public async Task<ListAllEntityVO<PortfolioReturnVO>> GetAllAsync(int? limit = null, int? page = null)
@@ -32,8 +35,11 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 ListAllEntityVO<PortfolioConfig> listEntities = 
                     await _portfolioRepo.GetAllAsync(limit, page);
 
-                return
+                ListAllEntityVO<PortfolioReturnVO> resp =
                     _mapper.Map<ListAllEntityVO<PortfolioReturnVO>>(listEntities);
+
+                resp.Items = GetFilesPortfolio(resp.Items);
+                return resp;
             }
             catch (NotFoundException ex)
             {
@@ -62,7 +68,15 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 if (save == null)
                     throw new NotFoundException($"Não foi encontrado um portfolio com o id {id}");
 
-                return _mapper.Map<PortfolioReturnVO>(save);
+                PortfolioReturnVO resp = _mapper.Map<PortfolioReturnVO>(save);
+
+                resp.ProfileImage =
+                    _handleFileService.GetUrlFileUniqueAtDirectory(
+                        ConstantsFileService.PortfolioProfileEntity,
+                        resp.Id.ToString(),
+                        ConstantsFileService.PortfolioProfileImageName);
+
+                return resp;
             }
             catch (NotFoundException ex)
             {
@@ -91,7 +105,15 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 if (save == null)
                     throw new NotFoundException($"Não foi encontrado um portfolio com a key informada");
 
-                return _mapper.Map<PortfolioReturnVO>(save);
+                PortfolioReturnVO resp = _mapper.Map<PortfolioReturnVO>(save);
+
+                resp.ProfileImage =
+                    _handleFileService.GetUrlFileUniqueAtDirectory(
+                        ConstantsFileService.PortfolioProfileEntity,
+                        save.Id.ToString(),
+                        ConstantsFileService.PortfolioProfileImageName);
+
+                return resp;
             }
             catch (NotFoundException ex)
             {
@@ -123,7 +145,25 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 PortfolioConfig portfolioEntity = _mapper.Map<PortfolioConfig>(model);
 
                 portfolioEntity = await _portfolioRepo.InsertAsync(portfolioEntity, usersIdsAsociates);
-                return _mapper.Map<PortfolioReturnVO>(portfolioEntity);
+
+                _handleFileService.SaveFileUniqueBase64AtDirectory(new FileBase64Model
+                {
+                    Name = ConstantsFileService.PortfolioProfileImageName,
+                    FileBase64 = model.ProfileImage.Name
+                },
+                ConstantsFileService.PortfolioProfileEntity,
+                ConstantsFileService.PortfolioProfileImageName,
+                portfolioEntity.Id.ToString());
+
+                PortfolioReturnVO resp = _mapper.Map<PortfolioReturnVO>(portfolioEntity);
+
+                resp.ProfileImage =
+                    _handleFileService.GetUrlFileUniqueAtDirectory(
+                        ConstantsFileService.PortfolioProfileEntity,
+                        resp.Id.ToString(),
+                        ConstantsFileService.PortfolioProfileImageName);
+
+                return resp;
             }
             catch (NotFoundException ex)
             {
@@ -187,7 +227,25 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 portfolioEntity.Id = id;
 
                 portfolioEntity = await _portfolioRepo.UpdateAsync(portfolioEntity, usersIdsAsociates);
-                return _mapper.Map<PortfolioReturnVO>(portfolioEntity);
+
+                _handleFileService.UpdateFileUniqueBase64AtDirectory(new FileBase64Model
+                {
+                    Name = ConstantsFileService.PortfolioProfileImageName,
+                    FileBase64 = model.ProfileImage.FileBase64
+                },
+                ConstantsFileService.PortfolioProfileEntity,
+                ConstantsFileService.PortfolioProfileImageName,
+                portfolioEntity.Id.ToString());
+
+                PortfolioReturnVO resp = _mapper.Map<PortfolioReturnVO>(portfolioEntity);
+
+                resp.ProfileImage =
+                   _handleFileService.GetUrlFileUniqueAtDirectory(
+                       ConstantsFileService.PortfolioProfileEntity,
+                       resp.Id.ToString(),
+                       ConstantsFileService.PortfolioProfileImageName);
+
+                return resp;
             }
             catch (NotFoundException ex)
             {
@@ -244,6 +302,31 @@ namespace Portfolio.Infrastructure.ServicesImpl
             {
                 _logService.Write($"Falha inesperada ao validar acesso ao portfolio {portfolioId} pelo usuário {userId}", this.GetPlace(), ex);
                 throw new ValidException($"Falha inesperada na validação de acesso ao portfolio", ex);
+            }
+        }
+
+        private List<PortfolioReturnVO> GetFilesPortfolio(List<PortfolioReturnVO> items)
+        {
+            try
+            {
+                foreach (PortfolioReturnVO item in items)
+                {
+                    item.ProfileImage =
+                        _handleFileService.GetUrlFileUniqueAtDirectory(
+                            ConstantsFileService.PortfolioProfileEntity,
+                            item.Id.ToString(),
+                            ConstantsFileService.PortfolioProfileImageName);
+                }
+                return items;
+            }
+            catch (ValidException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao listar imagens de portfolios", this.GetPlace(), ex);
+                throw new ValidException($"Falha inesperada ao listar imagens de portfolios", ex);
             }
         }
     }
