@@ -25,7 +25,7 @@ namespace Portfolio.Communication.ViewObjects.ExperienceEducation
         public int PortfolioId { get; set; }
 
         [Required(ErrorMessage = "Status de jornada não informado")]
-        public int JourneyEducationStatusId { get; set; }
+        public int JourneyWorkStatusId { get; set; }
     }
 
     public class ExperienceEducationReturnVO : SaveExperienceEducationVO

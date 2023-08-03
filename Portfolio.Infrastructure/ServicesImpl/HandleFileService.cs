@@ -17,9 +17,9 @@ namespace Portfolio.Infrastructure.ServicesImpl
 
         public HandleFileService(ILogService logService, IHttpContextAccessor httpContextAccessor)
         {
-            _fileUniqueService = new FileUniqueService(GetConfigsFileService());
             _logService = logService;
             _httpContextAccessor = httpContextAccessor;
+            _fileUniqueService = new FileUniqueService(GetConfigsFileService());
         }
 
         public void DeleteFileUniqueAtDirectory(string entityName, string idEntity, string nameFile)
@@ -45,6 +45,9 @@ namespace Portfolio.Infrastructure.ServicesImpl
             try
             {
                 FileReturnModel returnFile = _fileUniqueService.GetFileUrlAtDirectory(entityName, idEntity, nameFile);
+                if (returnFile == null)
+                    return null;
+
                 return new FileBase64Model
                 {
                     Name = returnFile.Name,

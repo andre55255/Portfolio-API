@@ -75,7 +75,7 @@ namespace Portfolio.HandleFiles.Helpers
                 index = base64.IndexOf("/");
 
                 string extension = base64type.Substring(index + 1);
-                Base64Data? hasMime = base64Data.Where(x => x.MimeType == extension).FirstOrDefault();
+                Base64Data? hasMime = base64Data.Where(x => x.Extension == extension).FirstOrDefault();
                 if (hasMime is not null)
                     extension = hasMime.Extension;
 

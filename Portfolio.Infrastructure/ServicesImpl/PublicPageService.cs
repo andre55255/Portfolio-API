@@ -140,7 +140,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
             {
                 string keyAccess =
                     request.Headers
-                           .Where(x => x.Key == "keyPortFolio")
+                           .Where(x => x.Key.ToUpper() == "Key-Portfolio".ToUpper())
                            .Select(x => x.Value)
                            .FirstOrDefault();
 

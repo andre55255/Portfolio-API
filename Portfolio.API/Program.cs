@@ -31,9 +31,6 @@ builder.Services.AddCors(builder.Configuration);
 // Add Repositories
 builder.Services.AddRepositories();
 
-// Add HttpConntext
-builder.Services.AddHttpContextAccessor();
-
 // Add Services
 builder.Services.AddServices();
 
@@ -52,6 +49,9 @@ app.UseSwagger()
 
 // Config Https
 app.UseHttpsRedirection();
+
+// Config http context
+app.UseHttpContext();
 
 // Config cors
 app.UseCors(ConfigPolicy.Cors);

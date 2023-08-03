@@ -237,11 +237,11 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 if (statusList == null)
                     throw new ValidException($"Nenhum status listado da base de dados, verifique");
 
-                bool isStatusExist = statusList.Where(x => x.Id == model.JourneyEducationStatusId)
+                bool isStatusExist = statusList.Where(x => x.Id == model.JourneyWorkStatusId)
                                                .Any();
 
                 if (!isStatusExist)
-                    throw new ValidException($"Não foi encontrado um status com o id {model.JourneyEducationStatusId}");
+                    throw new ValidException($"Não foi encontrado um status com o id {model.JourneyWorkStatusId}");
             }
             catch (RepositoryException ex)
             {
