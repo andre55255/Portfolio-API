@@ -15,6 +15,7 @@ namespace Portfolio.API.Extensions
             services.AddScoped<IPortfolioConfigRepository, PortfolioConfigRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IStackRepository, StackRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
             return services;

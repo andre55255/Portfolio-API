@@ -5,6 +5,7 @@ using Portfolio.Communication.ViewObjects.ExperienceEducation;
 using Portfolio.Communication.ViewObjects.ExperienceWork;
 using Portfolio.Communication.ViewObjects.Portfolio;
 using Portfolio.Communication.ViewObjects.Project;
+using Portfolio.Communication.ViewObjects.Stacks;
 using Portfolio.Communication.ViewObjects.Utlis;
 using Portfolio.Core.ServicesInterface;
 using Portfolio.Helpers;
@@ -19,8 +20,9 @@ namespace Portfolio.Infrastructure.ServicesImpl
         private readonly IExperienceWorkService _experienceWorkService;
         private readonly IContactMeService _contactMeService;
         private readonly IExperienceEducationService _experienceEducationService;
+        private readonly IStackService _stackService;
 
-        public PublicPageService(ILogService logService, IPortfolioConfigService portfolioService, IExperienceWorkService experienceWorkService, IExperienceEducationService experienceEducationService, IContactMeService contactMeService, IProjectService projectService)
+        public PublicPageService(ILogService logService, IPortfolioConfigService portfolioService, IExperienceWorkService experienceWorkService, IExperienceEducationService experienceEducationService, IContactMeService contactMeService, IProjectService projectService, IStackService stackService)
         {
             _logService = logService;
             _portfolioService = portfolioService;
@@ -28,6 +30,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
             _experienceEducationService = experienceEducationService;
             _contactMeService = contactMeService;
             _projectService = projectService;
+            _stackService = stackService;
         }
 
         public async Task<List<ExperienceEducationReturnVO>> GetMyExperiencesEducationAsync(PublicPageRequestDataVO requestData)
@@ -160,6 +163,32 @@ namespace Portfolio.Infrastructure.ServicesImpl
             {
                 _logService.Write($"Falha inesperada ao pegar dados de credenciais da requisição", this.GetPlace(), ex);
                 throw new ValidException($"Falha inesperada ao pegar dados de credenciais da requisição", ex);
+            }
+        }
+
+        public async Task<List<StackReturnVO>> GetStacksAsync(PublicPageRequestDataVO requestData)
+        {
+            try
+            {
+                return
+                    await _stackService.GetStacksByKeyAcessPortfolioAsync(requestData.KeyAccess);
+            }
+            catch (ConflictException ex)
+            {
+                throw ex;
+            }
+            catch (NotFoundException ex)
+            {
+                throw ex;
+            }
+            catch (ValidException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao pegar dados de minhas stacks pela key {requestData.KeyAccess}", this.GetPlace(), ex);
+                throw new ValidException($"Falha inesperada ao pegar dados de minhas stacks", ex);
             }
         }
 

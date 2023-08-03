@@ -40,5 +40,6 @@ namespace Portfolio.Core.Entities.Sql
         public virtual List<ExperienceEducation> ExperiencesEducations{ get; set; }
         public virtual List<ContactMe> Contacts { get; set; }
         public virtual List<Project> Projects { get; set; }
+        public virtual List<Stack> Stacks { get; set; }
     }
 }

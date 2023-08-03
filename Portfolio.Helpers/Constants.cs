@@ -18,6 +18,10 @@
         // Projects - Imagem única - Imagem de thumb de projeto
         public static string ProjectFileName = "ProjectThumb";
         public static string ProjectFileEntity = "ProjectThumb";
+
+        // Stacks - Imagem única - Imagem de ícone da stack
+        public static string StackFileName = "Stacks";
+        public static string StackFileEntity = "Stacks";
     }
 
     public static class ConfigurationTokens

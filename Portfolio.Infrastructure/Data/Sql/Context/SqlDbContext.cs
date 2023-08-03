@@ -24,6 +24,7 @@ namespace Portfolio.Infrastructure.Data.Sql.Context
         public DbSet<PortfolioConfig> Portfolios { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<PortfolioConfigUsersAssociate> PortofolioUsersAssociates { get; set; }
+        public DbSet<Stack> Stacks { get; set; }
 
         public SqlDbContext(DbContextOptions<SqlDbContext> opt) : base(opt)
         {
@@ -70,7 +71,8 @@ namespace Portfolio.Infrastructure.Data.Sql.Context
                    .ApplyConfiguration(new ExperienceWorkConfiguration())
                    .ApplyConfiguration(new GenericTypeConfiguration())
                    .ApplyConfiguration(new PortfolioConfiguration())
-                   .ApplyConfiguration(new ProjectConfiguration());
+                   .ApplyConfiguration(new ProjectConfiguration())
+                   .ApplyConfiguration(new StackConfiguration());
         }
     }
 }

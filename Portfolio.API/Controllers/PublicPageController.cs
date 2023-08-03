@@ -5,6 +5,7 @@ using Portfolio.Communication.ViewObjects.ExperienceEducation;
 using Portfolio.Communication.ViewObjects.ExperienceWork;
 using Portfolio.Communication.ViewObjects.Portfolio;
 using Portfolio.Communication.ViewObjects.Project;
+using Portfolio.Communication.ViewObjects.Stacks;
 using Portfolio.Communication.ViewObjects.Utlis;
 using Portfolio.Core.ServicesInterface;
 using Portfolio.Helpers;
@@ -26,7 +27,7 @@ namespace Portfolio.API.Controllers
         }
 
         /// <summary>
-        /// GetPortoflio - Método para listar dados de portfolio baseado na key informada pelo header, keyPortFolio=abs1235
+        /// GetPortoflio - Método para listar dados de portfolio baseado na key informada pelo header, Key-Portfolio=abs1235
         /// </summary>
         [HttpGet]
         [Route("GetPortfolio")]
@@ -72,7 +73,7 @@ namespace Portfolio.API.Controllers
         }
 
         /// <summary>
-        /// GetMyExperiencesWork - Método para listar dados de minhas experiências profissionais baseado na key informada pelo header, keyPortFolio=abs1235
+        /// GetMyExperiencesWork - Método para listar dados de minhas experiências profissionais baseado na key informada pelo header, Key-Portfolio=abs1235
         /// </summary>
         [HttpGet]
         [Route("GetMyExperiencesWork")]
@@ -118,7 +119,7 @@ namespace Portfolio.API.Controllers
         }
 
         /// <summary>
-        /// GetMyExperiencesEducation - Método para listar dados de minhas experiências educacionais baseado na key informada pelo header, keyPortFolio=abs1235
+        /// GetMyExperiencesEducation - Método para listar dados de minhas experiências educacionais baseado na key informada pelo header, Key-Portfolio=abs1235
         /// </summary>
         [HttpGet]
         [Route("GetMyExperiencesEducation")]
@@ -164,7 +165,53 @@ namespace Portfolio.API.Controllers
         }
 
         /// <summary>
-        /// SaveContactMe - Método para salvar contato feito pela página web, passar dados no body
+        /// GetStacks - Método para listar dados de minhas stacks baseado na key informada pelo header, Key-Portfolio=abs1235
+        /// </summary>
+        [HttpGet]
+        [Route("GetStacks")]
+        public async Task<IActionResult> GetStacksAsync()
+        {
+            try
+            {
+                PublicPageRequestDataVO requestData = _publicPageService.GetRequestData(Request);
+
+                List<StackReturnVO> data =
+                    await _publicPageService.GetStacksAsync(requestData);
+
+                return StatusCode(StatusCodes.Status200OK,
+                    APIResponseVO.Ok($"Stacks listadas com sucesso", data));
+            }
+            catch (NotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    APIResponseVO.Fail(ex.Message));
+            }
+            catch (ValidException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    APIResponseVO.Fail(ex.Message));
+            }
+            catch (AuthencationAppException ex)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized,
+                    APIResponseVO.Fail(ex.Message));
+            }
+            catch (ConflictException ex)
+            {
+                return StatusCode(StatusCodes.Status409Conflict,
+                    APIResponseVO.Fail(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao fazer rotina de pegar dados de minhas stacks. Headers: {JsonSerializer.Serialize(Request.Headers)}", this.GetPlace(), ex);
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    APIResponseVO.Fail($"Falha inesperada ao fazer rotina de pegar dados de minhas stacks"));
+            }
+        }
+
+        /// <summary>
+        /// SaveContactMe - Método para salvar contato feito pela página web, passar dados no body, no header passar Key-Portfolio=abs1235
         /// </summary>
         [HttpPost]
         [Route("SaveContactMe")]
@@ -210,7 +257,7 @@ namespace Portfolio.API.Controllers
         }
 
         /// <summary>
-        /// GetMyProjects - Método para listar dados dos meus projetos baseado na key informada pelo header, keyPortFolio=abs1235
+        /// GetMyProjects - Método para listar dados dos meus projetos baseado na key informada pelo header, Key-Portfolio=abs1235
         /// </summary>
         [HttpGet]
         [Route("GetMyProjects")]

@@ -20,6 +20,7 @@ namespace Portfolio.API.Extensions
             services.AddScoped<IPortfolioConfigService, PortfolioConfigService>();
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<IPublicPageService, PublicPageService>();
+            services.AddScoped<IStackService, StackService>();
             services.AddScoped<IUserService, UserService>();
 
             return services;

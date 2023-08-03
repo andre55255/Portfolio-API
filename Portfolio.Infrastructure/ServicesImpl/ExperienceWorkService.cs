@@ -256,7 +256,6 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 _logService.Write($"Falha inesperada ao consistir dados de experiência", this.GetPlace(), ex);
                 throw new ValidException($"Falha inesperada ao consistir dados de experiência", ex);
             }
-
         }
     }
 }
