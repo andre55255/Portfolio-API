@@ -116,16 +116,24 @@ namespace Portfolio.Infrastructure.ServicesImpl
         {
             try
             {
-                List<Base64Data> list = GetAllBase64FromReadFileTxt();
+                List<Base64Data> list = BuildListBase64();
 
                 FileConfigModel config = new FileConfigModel
                 {
                     BaseDirectory = Path.Combine(Path.GetFullPath("Directory")),
                     PathAvailableStaticFile = "/Static/",
-                    BaseUrlApi = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}",
+                    BaseUrlApi = _httpContextAccessor != null && 
+                                 _httpContextAccessor.HttpContext != null && 
+                                 _httpContextAccessor.HttpContext.Request != null ? 
+                                    $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}" : 
+                                    "",
                     Base64Data = list
                 };
                 return config;
+            }
+            catch (ValidException ex)
+            {
+                throw ex;
             }
             catch (ConfigFileException ex)
             {
@@ -182,6 +190,113 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 _logService.Write($"Falha inesperada ao ler lista de mime types do arquivo de configuração na api", this.GetPlace(), ex);
                 throw new ValidException($"Falha inesperada ao ler lista de mime types do arquivo de configuração na api");
             }
+        }
+
+        private List<Base64Data> BuildListBase64()
+        {
+            return new List<Base64Data>()
+            {
+                new Base64Data
+                {
+                    Extension = "xls",
+                    MimeType = "data:application/vnd.ms-excel;base64"
+                },
+                new Base64Data
+                {
+                    Extension = "xlsx",
+                    MimeType = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64"
+                },
+                new Base64Data
+                {
+                    Extension = "png",
+                    MimeType = "data:image/png;base64"
+                },
+                new Base64Data
+                {
+                    Extension = "jpg,jpeg",
+                    MimeType = "data:image/jpeg;base64"
+                },
+                new Base64Data
+                {
+                    MimeType = "data:image/gif;base64",
+                    Extension = "gif"
+                },
+                new Base64Data
+                {
+                    MimeType = "data:application/pdf;base64",
+                    Extension = "pdf"
+                },
+                new Base64Data
+                {
+                    MimeType = "data:application/msword;base64",
+                    Extension = "doc"
+                },
+                new Base64Data
+                {
+                    MimeType = "data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64",
+                    Extension = "docx"
+                },
+                new Base64Data
+                {
+                    MimeType = "data:application/vnd.ms-powerpoint;base64",
+                    Extension = "ppt"
+                },
+                new Base64Data
+                {
+                    MimeType = "data:application/vnd.openxmlformats-officedocument.presentationml.presentation;base64",
+                    Extension = "pptx"
+                },
+                new Base64Data
+                {
+                    MimeType = "data:video/mp4;base64",
+                    Extension = "mp4"
+                },
+                new Base64Data
+                {
+                    MimeType = "data:video/x-msvideo;base64",
+                    Extension = "avi"
+                },
+                new Base64Data
+                {
+                    MimeType = "data:video/quicktime;base64",
+                    Extension = "mov"
+                },
+                new Base64Data
+                {
+                    MimeType = "data:text/plain;base64",
+                    Extension = "txt"
+                },
+                new Base64Data
+                {
+                    MimeType = "data:text/html;base64",
+                    Extension = "html"
+                },
+                new Base64Data
+                {
+                    MimeType = "data:text/css;base64",
+                    Extension = "css"
+                },
+                new Base64Data
+                {
+                    MimeType = "data:application/javascript;base64",
+                    Extension = "js"
+                },
+                new Base64Data
+                {
+                    MimeType = "data:text/xml;base64",
+                    Extension = "xml"
+                },
+                new Base64Data 
+                {
+                    MimeType = "data:text/csv;base64",
+                    Extension = "csv"
+                },
+                new Base64Data
+                {
+                    MimeType = "data:application/zip;base64",
+                    Extension = "zip"
+                }
+            };
         }
     }
 }

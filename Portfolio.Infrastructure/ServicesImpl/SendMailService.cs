@@ -169,7 +169,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 client.Port = configs.SmtpPort;
                 client.EnableSsl = true;
 
-                //await client.SendMailAsync(mail);
+                await client.SendMailAsync(mail);
             }
             catch (EmailException ex)
             {

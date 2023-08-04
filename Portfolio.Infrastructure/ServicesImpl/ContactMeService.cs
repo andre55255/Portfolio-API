@@ -152,7 +152,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 _handleFileService.SaveFileUniqueBase64AtDirectory(
                     new FileBase64Model
                     {
-                        FileBase64 = model.FileAttachment == null ? null : model.FileAttachment.Name,
+                        FileBase64 = model.FileAttachment == null ? null : model.FileAttachment.FileBase64,
                         Name = ConstantsFileService.ContactMeFileName
                     },
                     ConstantsFileService.ContactMeFileEntity,
@@ -236,7 +236,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 _handleFileService.UpdateFileUniqueBase64AtDirectory(
                     new FileBase64Model
                     {
-                        FileBase64 = model.FileAttachment == null ? null : model.FileAttachment.Name,
+                        FileBase64 = model.FileAttachment == null ? null : model.FileAttachment.FileBase64,
                         Name = ConstantsFileService.ContactMeFileName
                     },
                     ConstantsFileService.ContactMeFileEntity,
@@ -283,8 +283,8 @@ namespace Portfolio.Infrastructure.ServicesImpl
                         throw new ValidException($"Não foi encontrado um portfolio com a key informada");
 
                     model.PortfolioId = idPort;
+                    return;
                 }
-
                 throw new ValidException($"Não foi informado dados para o portfolio do contato solicitado");
             }
             catch (NotFoundException ex)
