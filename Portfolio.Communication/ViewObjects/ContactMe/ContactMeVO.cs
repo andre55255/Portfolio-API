@@ -19,7 +19,7 @@ namespace Portfolio.Communication.ViewObjects.ContactMe
 
         public int? PortfolioId { get; set; }
 
-        public FileBase64Model FileAttachment { get; set; }
+        public FileBase64Model? FileAttachment { get; set; }
     }
 
     public class ContactMeReturnVO : SaveContactMeVO
