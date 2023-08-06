@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Portfolio.Communication.CustomExceptions;
+using Portfolio.Communication.ViewObjects.Account;
 using Portfolio.Communication.ViewObjects.User;
 using Portfolio.Communication.ViewObjects.Utlis;
 using Portfolio.Core.Entities.Identity;
@@ -13,13 +14,15 @@ namespace Portfolio.Infrastructure.ServicesImpl
     {
         private readonly IUserRepository _userRepo;
         private readonly ILogService _logService;
+        private readonly IPortfolioConfigService _portfolioConfigService;
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepo, ILogService logService, IMapper mapper)
+        public UserService(IUserRepository userRepo, ILogService logService, IMapper mapper, IPortfolioConfigService portfolioConfigService)
         {
             _userRepo = userRepo;
             _logService = logService;
             _mapper = mapper;
+            _portfolioConfigService = portfolioConfigService;
         }
 
         public async Task<UserWithRolesVO> CreateUserAsync(SaveUserVO model)
@@ -170,6 +173,33 @@ namespace Portfolio.Infrastructure.ServicesImpl
             {
                 _logService.Write($"Falha ao listar usuário com suas roles, {userId} {userName} {email}", this.GetPlace(), ex);
                 throw new ValidException($"Falha ao listar usuário com suas roles, {userId} {userName} {email}", ex);
+            }
+        }
+
+        public async Task SetPortfolioSelectedAsync(SetPortfolioSelectedVO model, RequestDataVO data)
+        {
+            try
+            {
+                await _portfolioConfigService.ValidPermissionAccessAsync(model.PortfolioId, data.User.Id);
+
+                await _userRepo.SetPortfolioSelectedAsync(data.User.Id, model.PortfolioId);
+            }
+            catch (ValidException ex)
+            {
+                throw ex;
+            }
+            catch (NotFoundException ex)
+            {
+                throw ex;
+            }
+            catch (RepositoryException ex)
+            {
+                throw new ValidException(ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao listar usuários", this.GetPlace(), ex);
+                throw new ValidException($"Falha inesperada ao listar usuários", ex);
             }
         }
 

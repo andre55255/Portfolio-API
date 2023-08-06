@@ -11,6 +11,7 @@
         public string PhoneNumber { get; set; }
         public DateTime? LockoutEnd { get; set; }
         public int AccessFailedCount { get; set; }
+        public int? PortfolioSelectedId { get; set; }
         public List<string> Roles { get; set; }
     }
 }

@@ -8,6 +8,11 @@ namespace Portfolio.Infrastructure.Data.Sql.EntitiesConfiguration
     {
         public void Configure(EntityTypeBuilder<AspNetUser> builder)
         {
+            builder.HasOne(x => x.PortfolioSelected)
+                   .WithMany(x => x.UsersSelecteds)
+                   .HasForeignKey(x => x.PortfolioSelectedId)
+                   .OnDelete(DeleteBehavior.NoAction);
+
             builder.Property(x => x.FirstName).HasMaxLength(125).IsRequired();
             builder.Property(x => x.LastName).HasMaxLength(125).IsRequired();
             builder.Property(x => x.UserName).HasMaxLength(255).IsRequired();
@@ -17,6 +22,7 @@ namespace Portfolio.Infrastructure.Data.Sql.EntitiesConfiguration
             builder.Property(x => x.CreatedAt).HasColumnType("timestamp").HasDefaultValue(DateTime.Now).IsRequired();
             builder.Property(x => x.UpdatedAt).HasColumnType("timestamp").HasDefaultValue(DateTime.Now).IsRequired();
             builder.Property(x => x.DisabledAt).HasColumnType("timestamp").IsRequired(false);
+            builder.Property(x => x.PortfolioSelectedId).IsRequired(false);
         }
     }
 }

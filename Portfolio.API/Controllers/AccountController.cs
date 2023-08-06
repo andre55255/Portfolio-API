@@ -138,6 +138,46 @@ namespace Portfolio.API.Controllers
         }
 
         /// <summary>
+        /// SetPortfolioSelected - Método para setar portfolio selecionado, passar dados pelo body
+        /// </summary>
+        [Authorize(Roles = "Admin, User")]
+        [HttpPost]
+        [Route("SetPortfolioSelected")]
+        public async Task<IActionResult> UserInfoAsync([FromBody] SetPortfolioSelectedVO model)
+        {
+            try
+            {
+                RequestDataVO data = _apiInfoService.GetRequestData(Request);
+                await _userService.SetPortfolioSelectedAsync(model, data);
+
+                return StatusCode(StatusCodes.Status200OK,
+                    APIResponseVO.Ok($"Portfolio selecionado setado com sucesso"));
+            }
+            catch (AuthenticationException ex)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized,
+                    APIResponseVO.Fail(ex.Message));
+            }
+            catch (NotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    APIResponseVO.Fail(ex.Message));
+            }
+            catch (ValidException ex)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized,
+                    APIResponseVO.Fail(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao setar portfolio selecionado", this.GetPlace(), ex);
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    APIResponseVO.Fail($"Falha inesperada ao setar portfolio selecionado"));
+            }
+        }
+
+        /// <summary>
         /// ResetPasswordSignIn - Método para redefinir a senha do usuário logado atualmente, passar dados pelo body
         /// </summary>
         [Authorize(Roles = "Admin, User")]

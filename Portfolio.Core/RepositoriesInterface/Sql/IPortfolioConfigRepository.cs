@@ -11,6 +11,7 @@ namespace Portfolio.Core.RepositoriesInterface.Sql
         public Task<PortfolioConfig> GetByIdAsync(int id);
         public Task<PortfolioConfig> GetByKeyAccessAsync(string keyAccess);
         public Task<ListAllEntityVO<PortfolioConfig>> GetAllAsync(int? limit = null, int? page = null);
+        public Task<ListAllEntityVO<PortfolioConfig>> GetAllAsync(int? limit, int? page, int userId);
         public Task<int> CountAsync();
         public Task<bool> IsExistByIdAsync(int portfolioId);
         public Task<bool> IsPermissionAccessByUserIdAsync(int portfolioId, int userId);

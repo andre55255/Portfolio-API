@@ -1,4 +1,5 @@
-﻿using Portfolio.Communication.ViewObjects.User;
+﻿using Portfolio.Communication.ViewObjects.Account;
+using Portfolio.Communication.ViewObjects.User;
 using Portfolio.Communication.ViewObjects.Utlis;
 
 namespace Portfolio.Core.ServicesInterface
@@ -11,5 +12,6 @@ namespace Portfolio.Core.ServicesInterface
         public Task<UserWithRolesVO> DeleteUserAsync(int? idUser);
         public Task<ListAllEntityVO<UserWithRolesVO>> GetAllUsersAsync(int? limit = null, int? page = null);
         public Task ValidationDataSaveUserAsync(SaveUserVO model);
+        public Task SetPortfolioSelectedAsync(SetPortfolioSelectedVO model, RequestDataVO data);
     }
 }

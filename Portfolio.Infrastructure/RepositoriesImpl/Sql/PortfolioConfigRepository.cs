@@ -316,5 +316,43 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
                 throw new RepositoryException($"Falha inesperada ao inserir portfolio na base de dados", ex);
             }
         }
+
+        public async Task<ListAllEntityVO<PortfolioConfig>> GetAllAsync(int? limit, int? page, int userId)
+        {
+            try
+            {
+                ListAllEntityVO<PortfolioConfig> response = new ListAllEntityVO<PortfolioConfig>();
+                response.TotalItems = await CountAsync();
+
+                if (response.TotalItems <= 0)
+                    return response;
+
+                StaticMethods.GetPaginationItems(ref response, ref limit, ref page);
+
+                response.Items =
+                    await _db.Portfolios
+                             .Where(x => x.DisabledAt == null &&
+                                         x.UsersAssociates
+                                          .Where(x => x.Id == userId)
+                                          .Any())
+                             .Include(x => x.UsersAssociates)
+                             .OrderBy(x => x.Title)
+                             .Skip(limit.Value * page.Value)
+                             .Take(limit.Value)
+                             .AsNoTracking()
+                             .ToListAsync();
+
+                return response;
+            }
+            catch (RepositoryException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao listar portfolios da base de dados", this.GetPlace(), ex);
+                throw new RepositoryException($"Falha inesperada ao listar portfolios da base de dados", ex);
+            }
+        }
     }
 }

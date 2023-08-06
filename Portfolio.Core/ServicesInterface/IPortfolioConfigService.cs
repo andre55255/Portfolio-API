@@ -11,6 +11,7 @@ namespace Portfolio.Core.ServicesInterface
         public Task<PortfolioReturnVO> GetByIdAsync(int id);
         public Task<PortfolioReturnVO> GetByKeyAccessAsync(string keyAccess);
         public Task<ListAllEntityVO<PortfolioReturnVO>> GetAllAsync(int? limit = null, int? page = null);
+        public Task<ListAllEntityVO<PortfolioReturnVO>> GetAllAsync(int? limit, int? page, RequestDataVO requestData);
         public Task ValidPermissionAccessAsync(int portfolioId, int userId);
     }
 }

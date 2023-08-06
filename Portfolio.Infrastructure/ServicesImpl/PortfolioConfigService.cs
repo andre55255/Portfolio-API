@@ -60,6 +60,38 @@ namespace Portfolio.Infrastructure.ServicesImpl
             }
         }
 
+        public async Task<ListAllEntityVO<PortfolioReturnVO>> GetAllAsync(int? limit, int? page, RequestDataVO requestData)
+        {
+            try
+            {
+                ListAllEntityVO<PortfolioConfig> listEntities =
+                    await _portfolioRepo.GetAllAsync(limit, page, requestData.User.Id);
+
+                ListAllEntityVO<PortfolioReturnVO> resp =
+                    _mapper.Map<ListAllEntityVO<PortfolioReturnVO>>(listEntities);
+
+                resp.Items = GetFilesPortfolio(resp.Items);
+                return resp;
+            }
+            catch (NotFoundException ex)
+            {
+                throw ex;
+            }
+            catch (RepositoryException ex)
+            {
+                throw new ValidException(ex.Message, ex);
+            }
+            catch (ValidException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao listar portfolios", this.GetPlace(), ex);
+                throw new ValidException($"Falha inesperada ao listar portfolios", ex);
+            }
+        }
+
         public async Task<PortfolioReturnVO> GetByIdAsync(int id)
         {
             try

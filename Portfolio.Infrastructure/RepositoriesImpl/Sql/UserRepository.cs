@@ -647,5 +647,38 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
                 throw new RepositoryException($"Falha inesperada ao validar usuários na base de dados", ex);
             }
         }
+
+        public async Task SetPortfolioSelectedAsync(int id, int portfolioId)
+        {
+            try
+            {
+                AspNetUser? user =
+                    await _signInManager
+                            .UserManager
+                            .Users
+                            .Where(x => x.Id == id &&
+                                        x.DisabledAt == null)
+                            .FirstOrDefaultAsync();
+
+                if (user == null)
+                    throw new RepositoryException($"Usuário {id} não encontrado");
+
+                user.PortfolioSelectedId = portfolioId;
+                user.UpdatedAt = DateTime.Now;
+
+                await _signInManager
+                        .UserManager
+                        .UpdateAsync(user);
+            }
+            catch (RepositoryException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao setar portfolio {portfolioId} selecionado para o usuário {id}", this.GetPlace(), ex);
+                throw new RepositoryException($"Falha inesperada ao setar portfolio {portfolioId} selecionado para o usuário {id}", ex);
+            }
+        }
     }
 }

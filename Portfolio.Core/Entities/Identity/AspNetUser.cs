@@ -19,8 +19,11 @@ namespace Portfolio.Core.Entities.Identity
         public DateTime UpdatedAt { get; set; }
         [Column("disabled_at")]
         public DateTime? DisabledAt { get; set; }
+        [Column("portfolio_selected_id")]
+        public int? PortfolioSelectedId { get; set; }
 
         // Props navigation
+        public virtual PortfolioConfig PortfolioSelected { get; set; }
         public virtual List<PortfolioConfig> PortfoliosAssociates { get; set; }
         public virtual List<PortfolioConfigUsersAssociate> PortolioUsersAssociates { get; set; }
 

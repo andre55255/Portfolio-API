@@ -15,14 +15,16 @@ namespace Portfolio.API.Controllers
     public class PortfolioController : ControllerBase
     {
         private readonly IPortfolioConfigService _portfolioService;
+        private readonly IApiInfoService _apiInfoService;
         private readonly IMapper _mapper;
         private readonly ILogService _logService;
 
-        public PortfolioController(IPortfolioConfigService portfolioService, IMapper mapper, ILogService logService)
+        public PortfolioController(IPortfolioConfigService portfolioService, IMapper mapper, ILogService logService, IApiInfoService apiInfoService)
         {
             _portfolioService = portfolioService;
             _mapper = mapper;
             _logService = logService;
+            _apiInfoService = apiInfoService;
         }
 
         /// <summary>
@@ -141,7 +143,9 @@ namespace Portfolio.API.Controllers
         {
             try
             {
-                ListAllEntityVO<PortfolioReturnVO> list = await _portfolioService.GetAllAsync(limit, page);
+                RequestDataVO requestData = _apiInfoService.GetRequestData(Request);
+
+                ListAllEntityVO<PortfolioReturnVO> list = await _portfolioService.GetAllAsync(limit, page, requestData);
 
                 return StatusCode(StatusCodes.Status200OK,
                     APIResponseVO.Ok($"Portfolios listados com scuesso", list));
