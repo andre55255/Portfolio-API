@@ -8,6 +8,7 @@ using Portfolio.Core.RepositoriesInterface.Sql;
 using Portfolio.Core.ServicesInterface;
 using Portfolio.HandleFiles.Models;
 using Portfolio.Helpers;
+using System.Collections.Generic;
 
 namespace Portfolio.Infrastructure.ServicesImpl
 {
@@ -163,6 +164,31 @@ namespace Portfolio.Infrastructure.ServicesImpl
             {
                 _logService.Write($"Falha inesperada ao listar portfolio pela key {keyAccess}", this.GetPlace(), ex);
                 throw new ValidException($"Falha inesperada ao listar portfolio pela key", ex);
+            }
+        }
+
+        public async Task<List<SelectObjectVO>> GetPortfoliosToSelectObjectAsync(RequestDataVO requestData)
+        {
+            try
+            {
+                return await _portfolioRepo.GetAllPortfoliosToSelectObjectByUserIdAsync(requestData.User.Id);
+            }
+            catch (NotFoundException ex)
+            {
+                throw ex;
+            }
+            catch (RepositoryException ex)
+            {
+                throw new ValidException(ex.Message, ex);
+            }
+            catch (ValidException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao listar portfolios para seleção", this.GetPlace(), ex);
+                throw new ValidException($"Falha inesperada ao listar portfolios para seleção", ex);
             }
         }
 

@@ -201,5 +201,40 @@ namespace Portfolio.API.Controllers
                     APIResponseVO.Fail($"Falha ao listar portfolio, id: {id}"));
             }
         }
+
+        /// <summary>
+        /// GetPortfoliosToSelect - Método para listar portfolios para seleção da base de dados. Sem parâmetros
+        /// </summary>
+        [Authorize(Roles = "Admin, User")]
+        [HttpGet("GetPortfoliosToSelect")]
+        public async Task<IActionResult> GetPortfoliosToSelectAsync()
+        {
+            try
+            {
+                RequestDataVO requestData = _apiInfoService.GetRequestData(Request);
+
+                List<SelectObjectVO> list = await _portfolioService.GetPortfoliosToSelectObjectAsync(requestData);
+
+                return StatusCode(StatusCodes.Status200OK,
+                    APIResponseVO.Ok($"Portfolios para seleção listados com scuesso", list));
+            }
+            catch (ValidException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    APIResponseVO.Fail(ex.Message));
+            }
+            catch (NotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    APIResponseVO.Fail(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha ao listar portfolios para seleção ", this.GetPlace(), ex);
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    APIResponseVO.Fail($"Falha ao listar portfolios para seleção "));
+            }
+        }
     }
 }

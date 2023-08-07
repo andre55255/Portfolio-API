@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Communication.CustomExceptions;
 using Portfolio.Communication.ViewObjects.Utlis;
@@ -7,6 +8,7 @@ using Portfolio.Core.RepositoriesInterface.Sql;
 using Portfolio.Core.ServicesInterface;
 using Portfolio.Helpers;
 using Portfolio.Infrastructure.Data.Sql.Context;
+using System.Collections.Generic;
 
 namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
 {
@@ -352,6 +354,37 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
             {
                 _logService.Write($"Falha inesperada ao listar portfolios da base de dados", this.GetPlace(), ex);
                 throw new RepositoryException($"Falha inesperada ao listar portfolios da base de dados", ex);
+            }
+        }
+
+        public async Task<List<SelectObjectVO>> GetAllPortfoliosToSelectObjectByUserIdAsync(int id)
+        {
+            try
+            {
+                return
+                    await _db.Portfolios
+                             .Where(x => x.DisabledAt == null &&
+                                         x.UsersAssociates
+                                          .Where(x => x.Id == id)
+                                          .Any())
+                             .Include(x => x.UsersAssociates)
+                             .OrderBy(x => x.Title)
+                             .Select(x => new SelectObjectVO
+                             {
+                                 Label = x.Title,
+                                 Value = x.Id
+                             })
+                             .AsNoTracking()
+                             .ToListAsync();
+            }
+            catch (RepositoryException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao listar portfolios para seleção da base de dados", this.GetPlace(), ex);
+                throw new RepositoryException($"Falha inesperada ao listar portfolios para seleção da base de dados", ex);
             }
         }
     }

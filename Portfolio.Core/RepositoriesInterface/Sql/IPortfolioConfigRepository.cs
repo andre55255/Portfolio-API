@@ -17,5 +17,6 @@ namespace Portfolio.Core.RepositoriesInterface.Sql
         public Task<bool> IsPermissionAccessByUserIdAsync(int portfolioId, int userId);
         public Task<bool> IsExistByKeyAccessAsync(string keyAccess);
         public Task<int?> GetIdByKeyAccessAsync(string keyAccess);
+        public Task<List<SelectObjectVO>> GetAllPortfoliosToSelectObjectByUserIdAsync(int id);
     }
 }
