@@ -124,7 +124,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenSettings.JwtSecret));
 
                 SigningCredentials credentials =
-                    new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha512);
+                    new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256Signature);
 
                 JwtSecurityToken newJwtToken = new JwtSecurityToken(
                     issuer: tokenSettings.JwtIssuer,
@@ -135,8 +135,8 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 );
 
                 string refreshTokenNew = await _userRepo.GenerateRefreshTokenAsync(userSave);
-                response.RefreshToken = refreshTokenNew;
-                response.AccessToken = new JwtSecurityTokenHandler().WriteToken(newJwtToken);
+                response.RefreshToken = "Quadrado";
+                response.AccessToken = "Bolinha";
 
                 return response;
             }

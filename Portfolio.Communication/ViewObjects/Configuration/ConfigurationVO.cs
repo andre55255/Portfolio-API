@@ -10,9 +10,8 @@ namespace Portfolio.Communication.ViewObjects.Configuration
         [Required(ErrorMessage = "Valor não informado")]
         [StringLength(255, ErrorMessage = "Valor deve ter entre 1 e 255 caracteres", MinimumLength = 1)]
         public string Value { get; set; }
-        [Required(ErrorMessage = "Extra não informado")]
-        [StringLength(255, ErrorMessage = "Extra deve ter entre 1 e 255 caracteres", MinimumLength = 1)]
-        public string Extra { get; set; }
+        [StringLength(255, ErrorMessage = "Extra deve ter entre 1 e 255 caracteres")]
+        public string? Extra { get; set; }
     }
 
     public class ConfigurationVO : SaveConfigurationVO
