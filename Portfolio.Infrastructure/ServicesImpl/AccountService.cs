@@ -135,8 +135,8 @@ namespace Portfolio.Infrastructure.ServicesImpl
                 );
 
                 string refreshTokenNew = await _userRepo.GenerateRefreshTokenAsync(userSave);
-                response.RefreshToken = "Quadrado";
-                response.AccessToken = "Bolinha";
+                response.RefreshToken = refreshTokenNew;
+                response.AccessToken = new JwtSecurityTokenHandler().WriteToken(newJwtToken);
 
                 return response;
             }
