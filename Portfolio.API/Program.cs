@@ -26,7 +26,7 @@ builder.Services.AddIdentity();
 builder.Services.AddAuthJwt(builder.Configuration);
 
 // Add Cors
-builder.Services.AddCors(builder.Configuration);
+builder.Services.AddCors();
 
 // Add Repositories
 builder.Services.AddRepositories();
@@ -47,14 +47,17 @@ if (app.Environment.IsDevelopment())
 app.UseSwagger()
    .UseSwaggerUI(c => c.SwaggerEndpoint($"/swagger/v{builder.Configuration[ConfigAppSettings.VersionApi]}/swagger.json", "Portfolio.API"));
 
-// Config Https
-app.UseHttpsRedirection();
+// Config Https - Not used Nginx Pub
+//app.UseHttpsRedirection();
+
+// Config Reverse Proxy Nginx
+app.UseForwardedHeaders();
 
 // Config http context
 app.UseHttpContext();
 
 // Config cors
-app.UseCors(ConfigPolicy.Cors);
+app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 // Config static files
 app.UseStaticFiles();

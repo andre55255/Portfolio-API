@@ -45,7 +45,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
                             if (!File.Exists(path))
                                 return;
 
-                            string pathDestinyArchived = Path.GetFullPath("Logs") + @"\archived\";
+                            string pathDestinyArchived = Path.GetFullPath("Logs") + $"{Path.PathSeparator}archived{Path.PathSeparator}";
                             Directory.CreateDirectory(pathDestinyArchived);
                             string filePathDestiny = pathDestinyArchived + dateArchive.Value.ToString("yyyyMMdd") + ".txt";
                             File.Copy(path, filePathDestiny);
@@ -63,7 +63,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
         {
             try
             {
-                string path = Path.GetFullPath("Logs") + "\\";
+                string path = Path.GetFullPath("Logs") + Path.PathSeparator;
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
 
