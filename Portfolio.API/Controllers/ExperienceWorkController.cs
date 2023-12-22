@@ -147,7 +147,8 @@ namespace Portfolio.API.Controllers
         {
             try
             {
-                ListAllEntityVO<ExperienceWorkReturnVO> list = await _experienceWorkService.GetAllAsync(limit, page);
+                var requestData = _apiInfoService.GetRequestData(Request);
+                ListAllEntityVO<ExperienceWorkReturnVO> list = await _experienceWorkService.GetAllAsync(requestData, limit, page);
 
                 return StatusCode(StatusCodes.Status200OK,
                     APIResponseVO.Ok($"Experiências profissionais listados com scuesso", list));

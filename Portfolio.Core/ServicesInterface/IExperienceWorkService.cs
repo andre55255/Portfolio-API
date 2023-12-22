@@ -9,7 +9,7 @@ namespace Portfolio.Core.ServicesInterface
         public Task<ExperienceWorkReturnVO> UpdateAsync(int? id, SaveExperienceWorkVO model, RequestDataVO request);
         public Task<ExperienceWorkReturnVO> RemoveAsync(int? id);
         public Task<ExperienceWorkReturnVO> GetByIdAsync(int? id);
-        public Task<ListAllEntityVO<ExperienceWorkReturnVO>> GetAllAsync(int? limit = null, int? page = null);
+        public Task<ListAllEntityVO<ExperienceWorkReturnVO>> GetAllAsync(RequestDataVO requestData, int? limit = null, int? page = null);
         public Task<List<ExperienceWorkReturnVO>> GetExperiencesWorkdsByKeyAcessPortfolioAsync(string keyAccess);
     }
 }

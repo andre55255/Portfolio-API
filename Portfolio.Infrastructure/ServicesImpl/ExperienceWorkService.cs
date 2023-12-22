@@ -28,12 +28,12 @@ namespace Portfolio.Infrastructure.ServicesImpl
             _portfolioConfigService = portfolioConfigService;
         }
 
-        public async Task<ListAllEntityVO<ExperienceWorkReturnVO>> GetAllAsync(int? limit = null, int? page = null)
+        public async Task<ListAllEntityVO<ExperienceWorkReturnVO>> GetAllAsync(RequestDataVO requestData, int? limit = null, int? page = null)
         {
             try
             {
                 ListAllEntityVO<ExperienceWork> listEntities =
-                    await _experienceWorkRepo.GetAllAsync(limit, page);
+                    await _experienceWorkRepo.GetAllAsync(limit, page, requestData.User.Id);
 
                 return
                     _mapper.Map<ListAllEntityVO<ExperienceWorkReturnVO>>(listEntities);

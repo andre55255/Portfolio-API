@@ -9,7 +9,7 @@ namespace Portfolio.Core.RepositoriesInterface.Sql
         public Task<ExperienceEducation> UpdateAsync(ExperienceEducation model);
         public Task<ExperienceEducation> RemoveAsync(int id);
         public Task<ExperienceEducation> GetByIdAsync(int id);
-        public Task<ListAllEntityVO<ExperienceEducation>> GetAllAsync(int? limit = null, int? page = null);
+        public Task<ListAllEntityVO<ExperienceEducation>> GetAllAsync(int? limit = null, int? page = null, int? userId = null);
         public Task<List<ExperienceEducation>> GetAllByPortfolioIdAsync(int portfolioId);
         public Task<int> CountAsync();
     }

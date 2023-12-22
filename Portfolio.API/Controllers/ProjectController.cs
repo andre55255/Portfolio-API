@@ -146,7 +146,8 @@ namespace Portfolio.API.Controllers
         {
             try
             {
-                ListAllEntityVO<ProjectReturnVO> list = await _projectService.GetAllAsync(limit, page);
+                var requestData = _apiInfoService.GetRequestData(Request);
+                ListAllEntityVO<ProjectReturnVO> list = await _projectService.GetAllAsync(requestData, limit, page);
 
                 return StatusCode(StatusCodes.Status200OK,
                     APIResponseVO.Ok($"Projetos listados com scuesso", list));

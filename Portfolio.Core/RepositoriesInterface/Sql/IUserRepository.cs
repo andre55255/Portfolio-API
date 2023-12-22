@@ -22,5 +22,6 @@ namespace Portfolio.Core.RepositoriesInterface.Sql
         public Task AuthenticationUserByUserNameByPassAsync(AspNetUser user, string password);
         public Task ValidUsersIdsAsync(List<int> usersIds);
         public Task SetPortfolioSelectedAsync(int id, int portfolioId);
+        public Task<int> GetIdPortfolioSelectedCurrentAsync(int userId);
     }
 }

@@ -9,7 +9,7 @@ namespace Portfolio.Core.RepositoriesInterface.Sql
         public Task<ContactMe> UpdateAsync(ContactMe model);
         public Task<ContactMe> RemoveAsync(int id);
         public Task<ContactMe> GetByIdAsync(int id);
-        public Task<ListAllEntityVO<ContactMe>> GetAllAsync(int? limit = null, int? page = null);
+        public Task<ListAllEntityVO<ContactMe>> GetAllAsync(int? limit = null, int? page = null, int? userId = null);
         public Task<int> CountAsync();
         public Task<List<ContactMe>> GetAllByPortfolioIdAsync(int portfolioId);
     }

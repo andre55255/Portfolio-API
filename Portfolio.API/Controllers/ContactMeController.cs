@@ -144,7 +144,8 @@ namespace Portfolio.API.Controllers
         {
             try
             {
-                ListAllEntityVO<ContactMeReturnVO> list = await _contactMeService.GetAllAsync(limit, page);
+                var requestData = _apiInfoService.GetRequestData(Request);
+                ListAllEntityVO<ContactMeReturnVO> list = await _contactMeService.GetAllAsync(requestData, limit, page);
 
                 return StatusCode(StatusCodes.Status200OK,
                     APIResponseVO.Ok($"Contatos listados com scuesso", list));

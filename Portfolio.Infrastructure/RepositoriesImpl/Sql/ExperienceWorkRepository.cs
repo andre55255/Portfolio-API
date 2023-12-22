@@ -14,13 +14,15 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
     {
         private readonly SqlDbContext _db;
         private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepo;
         private readonly ILogService _logService;
 
-        public ExperienceWorkRepository(SqlDbContext db, IMapper mapper, ILogService logService)
+        public ExperienceWorkRepository(SqlDbContext db, IMapper mapper, ILogService logService, IUserRepository userRepo)
         {
             _db = db;
             _mapper = mapper;
             _logService = logService;
+            _userRepo = userRepo;
         }
 
         public async Task<int> CountAsync()
@@ -43,10 +45,15 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
             }
         }
 
-        public async Task<ListAllEntityVO<ExperienceWork>> GetAllAsync(int? limit = null, int? page = null)
+        public async Task<ListAllEntityVO<ExperienceWork>> GetAllAsync(int? limit = null, int? page = null, int? userId = null)
         {
             try
             {
+                int portfolioId =
+                    userId.HasValue ?
+                    await _userRepo.GetIdPortfolioSelectedCurrentAsync(userId.Value) :
+                    -1;
+
                 ListAllEntityVO<ExperienceWork> response = new ListAllEntityVO<ExperienceWork>();
                 response.TotalItems = await CountAsync();
 
@@ -57,7 +64,8 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
 
                 response.Items =
                     await _db.ExperienceWorks
-                             .Where(x => x.DisabledAt == null)
+                             .Where(x => x.DisabledAt == null &&
+                                         (userId == null || x.PortfolioId == portfolioId))
                              .Include(x => x.JourneyWorkStatus)
                              .Include(x => x.Portfolio)
                              .OrderByDescending(x => x.StartDate)

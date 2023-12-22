@@ -29,12 +29,12 @@ namespace Portfolio.Infrastructure.ServicesImpl
             _handleFileService = handleFileService;
         }
 
-        public async Task<ListAllEntityVO<ContactMeReturnVO>> GetAllAsync(int? limit = null, int? page = null)
+        public async Task<ListAllEntityVO<ContactMeReturnVO>> GetAllAsync(RequestDataVO requestData, int? limit = null, int? page = null)
         {
             try
             {
                 ListAllEntityVO<ContactMe> listEntities =
-                    await _contactMeRepo.GetAllAsync(limit, page);
+                    await _contactMeRepo.GetAllAsync(limit, page, requestData.User.Id);
 
                 ListAllEntityVO<ContactMeReturnVO> resp =
                     _mapper.Map<ListAllEntityVO<ContactMeReturnVO>>(listEntities);

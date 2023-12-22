@@ -13,14 +13,16 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
     public class ProjectRepository : IProjectRepository
     {
         private readonly SqlDbContext _db;
+        private readonly IUserRepository _userRepo;
         private readonly ILogService _logService;
         private readonly IMapper _mapper;
 
-        public ProjectRepository(SqlDbContext db, ILogService logService, IMapper mapper)
+        public ProjectRepository(SqlDbContext db, ILogService logService, IMapper mapper, IUserRepository userRepo)
         {
             _db = db;
             _logService = logService;
             _mapper = mapper;
+            _userRepo = userRepo;
         }
 
         public async Task<int> CountAsync()
@@ -43,10 +45,15 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
             }
         }
 
-        public async Task<ListAllEntityVO<Project>> GetAllAsync(int? limit = null, int? page = null)
+        public async Task<ListAllEntityVO<Project>> GetAllAsync(int? limit = null, int? page = null, int? userId = null)
         {
             try
             {
+                int portfolioId =
+                   userId.HasValue ?
+                   await _userRepo.GetIdPortfolioSelectedCurrentAsync(userId.Value) :
+                   -1;
+
                 ListAllEntityVO<Project> response = new ListAllEntityVO<Project>();
                 response.TotalItems = await CountAsync();
 
@@ -57,7 +64,8 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
 
                 response.Items =
                     await _db.Projects
-                             .Where(x => x.DisabledAt == null)
+                             .Where(x => x.DisabledAt == null &&
+                                         (userId == null || x.PortfolioId == portfolioId))
                              .Include(x => x.Portfolio)
                              .OrderByDescending(x => x.UpdatedAt)
                              .ThenBy(x => x.Title)

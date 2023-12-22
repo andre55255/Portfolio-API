@@ -147,7 +147,8 @@ namespace Portfolio.API.Controllers
         {
             try
             {
-                ListAllEntityVO<StackReturnVO> list = await _stackService.GetAllAsync(limit, page);
+                var requestData = _apiInfoService.GetRequestData(Request);
+                ListAllEntityVO<StackReturnVO> list = await _stackService.GetAllAsync(requestData, limit, page);
 
                 return StatusCode(StatusCodes.Status200OK,
                     APIResponseVO.Ok($"Stacks listadas com scuesso", list));

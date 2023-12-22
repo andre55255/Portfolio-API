@@ -27,8 +27,6 @@ namespace Portfolio.API.Controllers
             _logService = logService;
         }
 
-
-
         /// <summary>
         /// POST - Método para criar uma experiência educacional na base de dados, passar dados pelo body
         /// </summary>
@@ -149,7 +147,8 @@ namespace Portfolio.API.Controllers
         {
             try
             {
-                ListAllEntityVO<ExperienceEducationReturnVO> list = await _experienceEducationService.GetAllAsync(limit, page);
+                var requestData = _apiInfoService.GetRequestData(Request);
+                ListAllEntityVO<ExperienceEducationReturnVO> list = await _experienceEducationService.GetAllAsync(requestData, limit, page);
 
                 return StatusCode(StatusCodes.Status200OK,
                     APIResponseVO.Ok($"Experiências educacionais listados com scuesso", list));

@@ -680,5 +680,31 @@ namespace Portfolio.Infrastructure.RepositoriesImpl.Sql
                 throw new RepositoryException($"Falha inesperada ao setar portfolio {portfolioId} selecionado para o usuário {id}", ex);
             }
         }
+
+        public async Task<int> GetIdPortfolioSelectedCurrentAsync(int userId)
+        {
+            try
+            {
+                var res = await
+                    _signInManager
+                        .UserManager
+                        .Users
+                        .Where(x => x.Id == userId &&
+                                    x.DisabledAt == null)
+                        .Select(x => x.PortfolioSelectedId)
+                        .FirstOrDefaultAsync();
+
+                return res.HasValue ? res.Value : -1;
+            }
+            catch (RepositoryException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                _logService.Write($"Falha inesperada ao buscar portfolio selecionado para usuário {userId}", this.GetPlace(), ex);
+                throw new RepositoryException($"Falha inesperada ao buscar portfolio selecionado para usuário {userId}", ex);
+            }
+        }
     }
 }
