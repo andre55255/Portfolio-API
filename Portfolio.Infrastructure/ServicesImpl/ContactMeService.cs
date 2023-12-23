@@ -16,10 +16,11 @@ namespace Portfolio.Infrastructure.ServicesImpl
         private readonly IMapper _mapper;
         private readonly ILogService _logService;
         private readonly IPortfolioConfigService _portfolioService;
+        private readonly IUserRepository _userRepo;
         private readonly IHandleFileService _handleFileService;
         private readonly IPortfolioConfigRepository _portfolioRepo;
 
-        public ContactMeService(IContactMeRepository contactMeRepo, IMapper mapper, ILogService logService, IPortfolioConfigService portfolioService, IPortfolioConfigRepository portfolioRepo, IHandleFileService handleFileService)
+        public ContactMeService(IContactMeRepository contactMeRepo, IMapper mapper, ILogService logService, IPortfolioConfigService portfolioService, IPortfolioConfigRepository portfolioRepo, IHandleFileService handleFileService, IUserRepository userRepo)
         {
             _contactMeRepo = contactMeRepo;
             _mapper = mapper;
@@ -27,6 +28,7 @@ namespace Portfolio.Infrastructure.ServicesImpl
             _portfolioService = portfolioService;
             _portfolioRepo = portfolioRepo;
             _handleFileService = handleFileService;
+            _userRepo = userRepo;
         }
 
         public async Task<ListAllEntityVO<ContactMeReturnVO>> GetAllAsync(RequestDataVO requestData, int? limit = null, int? page = null)
@@ -144,6 +146,15 @@ namespace Portfolio.Infrastructure.ServicesImpl
 
                 ContactMe entity = _mapper.Map<ContactMe>(model);
 
+                if (requestData != null)
+                {
+                    var portfolioId = await _userRepo.GetIdPortfolioSelectedCurrentAsync(requestData.User.Id);
+                    if (portfolioId <= 0)
+                        throw new ValidException($"Por favor selecione um portfolio para vincular este contato {requestData.User.Username}");
+
+                    entity.PortfolioId = portfolioId;
+                }
+
                 entity = await _contactMeRepo.InsertAsync(entity);
 
                 ContactMeReturnVO resp =
@@ -227,6 +238,15 @@ namespace Portfolio.Infrastructure.ServicesImpl
 
                 ContactMe entity = _mapper.Map<ContactMe>(model);
                 entity.Id = id.Value;
+
+                if (requestData != null)
+                {
+                    var portfolioId = await _userRepo.GetIdPortfolioSelectedCurrentAsync(requestData.User.Id);
+                    if (portfolioId <= 0)
+                        throw new ValidException($"Por favor selecione um portfolio para vincular este contato {requestData.User.Username}");
+
+                    entity.PortfolioId = portfolioId;
+                }
 
                 entity = await _contactMeRepo.UpdateAsync(entity);
 
